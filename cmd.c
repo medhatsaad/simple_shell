@@ -2,10 +2,9 @@
 
 int main()
 {
-	char *cmd = NULL, *cmdcpy = NULL, *token = NULL, **av = NULL;
-	char *delim = " \n";
+	char *cmd = NULL, **av = NULL;
 	size_t n = 0;
-	int ac, status;
+	int ac;
 	pid_t child;
 
 
@@ -17,44 +16,30 @@ int main()
 		{
 			printf("\n");
 			exit(0);
-		} else if (*cmd == '\n')
-			av = NULL;
-
-		cmdcpy = strdup(cmd);
-		token = strtok(cmdcpy, delim);
-		ac = 0;
-
-		while(token)
-		{
-			token = strtok(NULL,delim);
-			ac++;
 		}
-		av = realloc(av, sizeof(char *) *ac);
+		ac = getac(cmd);
+		av = getav(cmd, ac, av);
 
-		token = strtok(cmd, delim);
-	        ac = 0;
-		while(token)
+		if(isapath(av[0]) == 0)
 		{
-			av[ac++] = token;
-			token = strtok(NULL,delim);
-		}
-		av[ac] = NULL;
-		child = fork();
+			child = fork();
 
-		if (child == 0)
-		{
-			if (execve(av[0], av, NULL) == -1)
+			if (child == 0)
 			{
-				perror("Error:");
+				if (execve(av[0], av, NULL) == -1)
+				{
+					perror("Error:");
+					exit(-1);
+				}
+			} else if (child == -1)
+				perror("Failed to fork");
+			else
+			{
+				wait(NULL);
 			}
-		} else if (child == -1)
-			perror("Failed to fork");
-		else
-		{
-			wait(NULL);
-			while (ac)
-				free(av[--ac]);
-		}
+		} else
+			perror("command not found");
+
 	}
 	exit(0);
 }
