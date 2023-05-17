@@ -1,15 +1,17 @@
 #include "shell.h"
 
+extern char **environ;
+
 /**
  * _getenv - gets the value of an environment variable.
  * @str: string representing the key of the environment variable.
  * Return: The corresponding value of the key if it exists or NULL not.
- */
+ **/
 char *_getenv(char *str)
 {
-	char **env = environ;
 	char *value = NULL;
 	int len;
+	char **env = environ;
 
 	while (*env != NULL)
 	{
@@ -32,18 +34,19 @@ char *_getenv(char *str)
  */
 char *_which(char **av)
 {
-	char *fullpath = NULL, *path = NULL, *delim = ":", *token = NULL;
+	char *fullpath = NULL, *path = NULL, *pathdup, *delim = ":", *token = NULL;
 	int found = 0;
 
-	path = _getenv("PATH");
-
+	pathdup = _getenv("PATH");
+	path = strdup(pathdup);
 	token = strtok(path, delim);
 
 	while (token != NULL)
 	{
-		if (fullpath == NULL && isapath(token, av[0]) != NULL)
+		fullpath = isapath(token, av[0]);
+
+		if (found == 0 && fullpath != NULL)
 		{
-			fullpath = strdup(isapath(token, av[0]));
 			av[0] = strdup(fullpath);
 			found = 1;
 			break;
@@ -51,6 +54,7 @@ char *_which(char **av)
 		token = strtok(NULL, delim);
 	}
 	free(fullpath);
+	free(path);
 	if (found)
 		return (av[0]);
 
