@@ -1,5 +1,10 @@
 #include "shell.h"
-
+/**
+ * _exit - exits shell with a status
+ * @status: integer
+ */
+void _exit(int status)
+{}
 /**
  * start_proc - starts a new process if a executable is found
  * @av: array of pointers
@@ -32,6 +37,6 @@ void start_proc(char **av)
 		{
 			wait(NULL);
 		}
-	} else
+	 } else
 		 perror("command not found");
 }

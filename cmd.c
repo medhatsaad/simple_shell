@@ -10,10 +10,8 @@ int main()
 	{
 		printf("$ ");
 
-		if (getline(&cmd, &n, stdin) == -1)
-		{
-			printf("\n");
-			exit(0);
+		if (getline(&cmd, &n, stdin) == -1 || strcmp("exit\n",cmd) == 0)
+	      	{	exit(0);
 		}
 		ac = getac(cmd);
 		av = getav(cmd, ac, av);
