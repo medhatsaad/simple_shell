@@ -26,7 +26,7 @@ int getac(char *str)
 }
 
 /**
- * getav - gets the array cmd argumens
+ * getav - gets the array arguments
  * @str: string to divide into args
  * Return: array of pointers
  */
@@ -37,11 +37,7 @@ char **getav(char *str, int ac, char **av)
 
 	if (ac > 0)
 	{
-		if (!av || av == NULL)
-			av = malloc(sizeof(char *) * (ac + 1));
-		else
-			av = realloc(av, sizeof(char *) * (ac + 1));
-
+		av = malloc(sizeof(char *) * (ac + 1));
 		if (av == NULL)
 			return (NULL);
 	} else
@@ -50,34 +46,13 @@ char **getav(char *str, int ac, char **av)
 	strcp = strdup(str);
 
 	token = strtok(strcp, delim);
-
-	while(token)
+	i = 0;
+       	while(token)
 	{
 		av[i++] = strdup(token);
 		token = strtok(NULL,delim);
 	}
-	av[ac] = NULL;
+	av[i] = NULL;
 	free(strcp);
 	return (av);
-}
-
-/**
- *isapath - checks if a given path command is valid
- * @str: command name
- * Return: 0 if it exists and -1 otherwise
- */
-int isapath(char *str)
-{
-	char *path = malloc(sizeof(BIN) + sizeof(str));
-
-	strcpy(path,BIN);
-	strcat(path,str);
-
-	if (access(path, F_OK) == -1)
-	{
-		free(path);
-		return (-1);
-	}
-	free(path);
-	return (0);
 }

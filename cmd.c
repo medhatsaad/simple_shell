@@ -18,6 +18,7 @@ int main()
 		ac = getac(cmd);
 		av = getav(cmd, ac, av);
 		start_proc(av);
+
 	}
 	exit(0);
 }

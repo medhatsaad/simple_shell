@@ -6,9 +6,14 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#define BIN "/bin/"
+
+extern char **environ;
+char *_getenv(char *str);
+char *_which(char **av);
+char *isapath(char *path, char *cmd);
+
 void start_proc(char **av);
 int getac(char *str);
-char **getav(char *str, int ac, char ** av);
-int isapath(char *str);
+char **getav(char *str, int ac, char **av);
+
 #endif
