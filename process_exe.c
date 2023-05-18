@@ -1,24 +1,6 @@
 #include "shell.h"
 
 /**
- * _exit - exits shell with a status
- * @status: integer
- *
-int exits(char *status)
-{
-	if(strcmp(status, "exit\n") == 0 || strcmp(status, "exit ") > 0)
-		return (0);
-	return (-1);
-
-	if(strcmp(av[0], "exit")== 0)
-{
-if (av[1]== NULL)
-status = 0;
-if(av[1][0] == '(' && av[1][strlen(av[1]-1)] == ')' && av[2] == NULL)
-status =}
-	**/
-
-/**
  * start_proc - starts a new process if a executable is found
  * @av: array of pointers
  */
@@ -30,13 +12,12 @@ void start_proc(char **av)
 
 	if (av != NULL)
 	{
-		fullpath = _which(av);
+		fullpath = isapath(fullpath, av[0]);
 
 		if(fullpath != NULL)
-		{
-			av[0] = strdup(fullpath);
+		{	av[0] = strdup(fullpath);
+			free(fullpath);
 			proc = fork();
-
 			if (proc == 0)
 			{
 				if (execve(av[0], av, NULL) == -1)
@@ -54,6 +35,11 @@ void start_proc(char **av)
 			perror("command not found");
 	}
 }
+
+/**
+ * print - prints a buffer
+ * @buff: pointer to the buffer to print
+ */
 void print(char *buff)
 {
 	size_t n = 0;
@@ -63,4 +49,32 @@ void print(char *buff)
 		n = strlen(buff);
 		write(1, buff, n);
 	}
+}
+
+/**
+ * isapath - checks if a given path command is valid
+ * @str: command name
+ * Return: 0 if it exists and -1 otherwise
+ */
+char *isapath(char *path, char *cmd)
+{
+	char *pathcpy = NULL;
+
+	path = "/bin";
+	pathcpy = malloc(strlen(path) + strlen(cmd) + 2);
+
+	if (pathcpy == NULL)
+		return (NULL);
+
+	strcpy(pathcpy, path);
+	strcat(pathcpy, "/");
+	strcat(pathcpy, cmd);
+
+	if (access(pathcpy, F_OK) == -1)
+	{
+		free(pathcpy);
+		return (NULL);
+	}
+
+	return (pathcpy);
 }

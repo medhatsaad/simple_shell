@@ -7,9 +7,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-extern char **environ;
-char *_getenv(char *str);
-char *_which(char **av);
 char *isapath(char *path, char *cmd);
 void print(char *buff);
 void start_proc(char **av);
