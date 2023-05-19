@@ -6,11 +6,12 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
+#include <ctype.h>
+char *_readline();
 char *isapath(char *path, char *cmd);
 void print(char *buff);
 void start_proc(char **av);
 int getac(char *str);
 char **getav(char *str, int ac, char **av);
-int exits(char *status);
+int exit_status(char **av);
 #endif

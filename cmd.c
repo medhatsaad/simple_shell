@@ -3,24 +3,17 @@
 int main()
 {
 	char *cmd = NULL, **av = NULL;
-	size_t n = 0;
-	int ac;
+       	int ac;
 
        	while (1)
 	{
-		print("$ ");
 
-		if (getline(&cmd, &n, stdin) == -1)
-		{
-			print("\n");
-			free(cmd);
-			exit(0);
-		}
-
+		cmd = _readline();
 		ac = getac(cmd);
 		av = getav(cmd, ac, av);
-		start_proc(av);
 
+		if (!exit_status(av))
+			start_proc(av);
 	}
-	exit(0);
+	return (0);
 }

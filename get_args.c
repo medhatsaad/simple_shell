@@ -1,5 +1,21 @@
 #include "shell.h"
 
+char *_readline()
+{
+	char *cmd = NULL;
+	size_t n = 0;
+
+	print("$ ");
+
+	if (getline(&cmd, &n, stdin) == -1)
+	{
+		print("\n");
+		free(cmd);
+		exit(0);
+	}
+	return (cmd);
+}
+
 /**
  * getac - gets the number of arguments passed into the cmd
  * @str: string to check
@@ -37,7 +53,10 @@ char **getav(char *str, int ac, char **av)
 
 	if (ac > 0)
 	{
-		av = malloc(sizeof(char *) * (ac + 1));
+		if (av == NULL)
+			av = malloc(sizeof(char *) * (ac + 1));
+		else
+			av = realloc(av, sizeof(char *) * (ac + 1));
 		if (av == NULL)
 			return (NULL);
 	} else
@@ -46,8 +65,8 @@ char **getav(char *str, int ac, char **av)
 	strcp = strdup(str);
 
 	token = strtok(strcp, delim);
-	i = 0;
-       	while(token)
+
+	while(token)
 	{
 		av[i++] = strdup(token);
 		token = strtok(NULL,delim);
