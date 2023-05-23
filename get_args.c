@@ -57,16 +57,10 @@ char **getav(char *str, int ac, char **av)
 			av = malloc(sizeof(char *) * (ac + 1));
 		else
 			av = realloc(av, sizeof(char *) * (ac + 1));
-		if (av == NULL)
-			return (NULL);
-	} else
-		return (NULL);
+		av = malloc(sizeof(char *) * (ac + 1));
 
-	strcp = strdup(str);
-
-	token = strtok(strcp, delim);
-
-	while(token)
+	i = 0;
+       	while(token)
 	{
 		av[i++] = strdup(token);
 		token = strtok(NULL,delim);

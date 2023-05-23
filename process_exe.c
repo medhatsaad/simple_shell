@@ -1,6 +1,7 @@
 #include "shell.h"
 
 /**
+<<<<<<< HEAD
  * exit_status - exits shell with a status
  * @status: integer
  *
@@ -46,6 +47,8 @@ int exit_status(char **av)
 	return (0);
 }
 /**
+=======
+>>>>>>> medhat
  * start_proc - starts a new process if a executable is found
  * @av: array of pointers
  */
@@ -53,35 +56,37 @@ int exit_status(char **av)
 void start_proc(char **av)
 {
 	pid_t proc;
-	char *fullpath = NULL;
+
+	char *fullpath;
 
 	if (av != NULL)
 	{
-		fullpath = isapath(fullpath, av[0]);
-
-		if(fullpath != NULL)
+		fullpath = _which(av);
+		
+		if (!_strcmp(fullpath, "1"))
 		{
-			av[0] = strdup(fullpath);
-			free(fullpath);
-			proc = fork();
-			if (proc == 0)
-			{
-				if (execve(av[0], av, NULL) == -1)
+			if (fullpath != NULL)
+			{	av[0] = _strcp(fullpath);
+				free(fullpath);
+				proc = fork();
+				if (proc == 0)
 				{
-					perror("Error:");
-					exit(-1);
+					if (execve(av[0], av, NULL) == -1)
+					{
+						perror("Error:");
+						exit(-1);
+					}
+				} else if (proc == -1)
+					perror("Failed to fork");
+				else
+				{
+					wait(NULL);
 				}
-			} else if (proc == -1)
-				perror("Failed to fork");
-			else
-			{
-				wait(NULL);
-			}
-		} else
-			perror("command not found");
+			} else
+				perror("command not found");
+		}
 	}
 }
-
 /**
  * print - prints a buffer to the standard output
  * @buff: pointer to the buffer to print
@@ -95,32 +100,4 @@ void print(char *buff)
 		n = strlen(buff);
 		write(1, buff, n);
 	}
-}
-
-/**
- * isapath - checks if a given path command is valid
- * @str: command name
- * Return: 0 if it exists and -1 otherwise
- */
-char *isapath(char *path, char *cmd)
-{
-	char *pathcpy = NULL;
-
-	path = "/bin";
-	pathcpy = malloc(strlen(path) + strlen(cmd) + 2);
-
-	if (pathcpy == NULL)
-		return (NULL);
-
-	strcpy(pathcpy, path);
-	strcat(pathcpy, "/");
-	strcat(pathcpy, cmd);
-
-	if (access(pathcpy, F_OK) == -1)
-	{
-		free(pathcpy);
-		return (NULL);
-	}
-
-	return (pathcpy);
 }
