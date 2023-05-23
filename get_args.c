@@ -1,5 +1,9 @@
 #include "shell.h"
 
+/**
+ * _readline - get line from stdin
+ * Return: string
+*/
 char *_readline()
 {
 	char *cmd = NULL;
@@ -26,15 +30,15 @@ int getac(char *str)
 	char *strcp = NULL, *token, *delim = " \n";
 	int ac = 0;
 
-	if(str == NULL)
+	if (str == NULL)
 		return (-1);
 
 	strcp = strdup(str);
 	token = strtok(strcp, delim);
 
-	while(token)
+	while (token)
 	{
-		token = strtok(NULL,delim);
+		token = strtok(NULL, delim);
 		ac++;
 	}
 	free(strcp);
@@ -44,6 +48,8 @@ int getac(char *str)
 /**
  * getav - gets the array arguments
  * @str: string to divide into args
+ * @ac: no of arg
+ * @av: args
  * Return: array of pointers
  */
 char **getav(char *str, int ac, char **av)
@@ -56,13 +62,13 @@ char **getav(char *str, int ac, char **av)
 	else
 		av = realloc(av, sizeof(char *) * (ac + 1));
 	av = malloc(sizeof(char *) * (ac + 1));
-	
+
 	i = 0;
-	token = strtok(str,delim);
-       	while(token)
+	token = strtok(str, delim);
+	while (token)
 	{
 		av[i++] = strdup(token);
-		token = strtok(NULL,delim);
+		token = strtok(NULL, delim);
 	}
 	av[i] = NULL;
 	return (av);

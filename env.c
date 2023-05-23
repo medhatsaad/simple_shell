@@ -15,13 +15,17 @@ void  _env(void)
 	}
 }
 
+/**
+ * _cd - change dir
+ * @argv: command arg
+ */
 void _cd(char **argv)
 {
 	char *_dir, *_wd, *pathname;
 
 	_dir = *(argv + 1);
 	_wd = getcwd(NULL, 0);
-	if(_dir)
+	if (_dir)
 	{
 		if (_strcmp(_dir, "-") == 0)
 			pathname = _getenv("HOME");
@@ -40,7 +44,8 @@ void _cd(char **argv)
 
 /**
  * _ssetenv - upsate env variables
- * @argv: command arguments
+ * @variable: env name
+ * @value: env value
  */
 void _ssetenv(char *variable, char *value)
 {

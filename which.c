@@ -1,7 +1,7 @@
 # include "shell.h"
 /**
- * _getdirlist - extract list of directrories from environment variable
- *
+ * _getenv - extract list of directrories from environment variable
+ * @_varname: env var name
  * Return: string of DIRs separated by ':"
  */
 char *_getenv(char *_varname)
@@ -74,6 +74,7 @@ char *_which(char **argv)
 {
 	char *pathname, *_wd, *arg0;
 	int i;
+
 	arg0 = *argv;
 	if (*argv[0] == '/')
 	{
@@ -96,11 +97,10 @@ char *_which(char **argv)
 	}
 	free(_wd);
 	if (checkbuiltin(argv))
-		return ("1"); 
-	else		
-		return(_envcheck(*argv));
-}	
-
+		return ("1");
+	else
+		return (_envcheck(*argv));
+}
 /**
  * _envcheck - check command vs path env
  * @argv: input command

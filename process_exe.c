@@ -2,8 +2,9 @@
 
 /**
  * exit_status - exits shell with a status
- * @status: integer
+ * @av: arg
  *
+ * * Return: 0
  */
 
 int exit_status(char **av)
@@ -14,7 +15,7 @@ int exit_status(char **av)
 	if (av == NULL)
 		return (0);
 
-	if(strcmp(av[0], "exit")== 0)
+	if (strcmp(av[0], "exit") == 0)
 	{
 		if (av[1] != NULL)
 		{
@@ -39,7 +40,7 @@ int exit_status(char **av)
 			}
 		}
 
-		for(i = 0; av[i] != NULL; i++)
+		for (i = 0; av[i] != NULL; i++)
 			free(av[i]);
 		exit(status);
 	}
@@ -59,7 +60,7 @@ void start_proc(char **av)
 	if (av != NULL)
 	{
 		fullpath = _which(av);
-		
+
 		if (_strcmp(fullpath, "1") != 0)
 		{
 			if (fullpath != NULL)
@@ -92,7 +93,7 @@ void print(char *buff)
 {
 	size_t n = 0;
 
-	if(buff != NULL)
+	if (buff != NULL)
 	{
 		n = strlen(buff);
 		write(1, buff, n);

@@ -1,50 +1,10 @@
 # include "shell.h"
-
-/**
- * _strlen - return length of string
- * @p: string
- *
- * Return: length
- 
-int _strlen(char *p)
-{
-	int i, size = 0;
-
-	for (i = 0; p[i] != '\0'; i++)
-		size++;
-	return (size);
-}
-*/
-
-/**
- * _strcmp - check if strings are equall
- * @a: string1
- * @b: string2
- *
- * Return: 1 if equall
- 
-int _strcmp(char *a, char *b)
-{
-	int i;
-
-	if (a == NULL && b == NULL)
-		return (1);
-	if (_strlen(a) != _strlen(b))
-		return (0);
-	for (i = 0; i < _strlen(a); i++)
-	{
-		if (a[i] != b[i])
-			return (0);
-	}
-	return (1);
-}
-*/
 /**
  * _strcp - return a copy of string
  * @p: string
  *
  * Return: new string copy
- */ 
+ */
 char *_strcp(char *p)
 {
 	int i, j;
@@ -63,6 +23,12 @@ char *_strcp(char *p)
 		return (NULL);
 }
 
+/**
+ * _addstring - concat 2 strings
+ * @a: string1
+ * @b: string2
+ * Return: string
+*/
 char *_addstring(char *a, char *b)
 {
 	int i, sizea = 0, sizeb = 0, size = 0;
