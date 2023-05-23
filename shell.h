@@ -15,7 +15,7 @@ int getac(char *str);
 char **getav(char *str, int ac, char **av);
 int exit_status(char **av);
 int exits(char *status);
-int _strlen(char *p);
+size_t _strlen(char *p);
 int _strcmp(char *a, char *b);
 char *_strcp(char *p);
 char *_addstring(char *a, char *b);

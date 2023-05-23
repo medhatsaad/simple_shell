@@ -5,7 +5,7 @@
  * @p: string
  *
  * Return: length
- */
+ 
 int _strlen(char *p)
 {
 	int i, size = 0;
@@ -14,6 +14,7 @@ int _strlen(char *p)
 		size++;
 	return (size);
 }
+*/
 
 /**
  * _strcmp - check if strings are equall
@@ -21,7 +22,7 @@ int _strlen(char *p)
  * @b: string2
  *
  * Return: 1 if equall
- */
+ 
 int _strcmp(char *a, char *b)
 {
 	int i;
@@ -37,13 +38,13 @@ int _strcmp(char *a, char *b)
 	}
 	return (1);
 }
-
+*/
 /**
  * _strcp - return a copy of string
  * @p: string
  *
  * Return: new string copy
- */
+ */ 
 char *_strcp(char *p)
 {
 	int i, j;
@@ -61,7 +62,6 @@ char *_strcp(char *p)
 	else
 		return (NULL);
 }
-
 
 char *_addstring(char *a, char *b)
 {

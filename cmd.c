@@ -6,7 +6,6 @@ int main()
        	int ac;
 
 	size_t n = 0;
-	int ac;
 
        	while (1)
 	{

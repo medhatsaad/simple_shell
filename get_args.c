@@ -49,23 +49,21 @@ int getac(char *str)
 char **getav(char *str, int ac, char **av)
 {
 	int i = 0;
-	char *token, *strcp, *delim = " \n";
+	char *token, *delim = " \n";
 
-	if (ac > 0)
-	{
-		if (av == NULL)
-			av = malloc(sizeof(char *) * (ac + 1));
-		else
-			av = realloc(av, sizeof(char *) * (ac + 1));
+	if (av == NULL)
 		av = malloc(sizeof(char *) * (ac + 1));
-
+	else
+		av = realloc(av, sizeof(char *) * (ac + 1));
+	av = malloc(sizeof(char *) * (ac + 1));
+	
 	i = 0;
+	token = strtok(str,delim);
        	while(token)
 	{
 		av[i++] = strdup(token);
 		token = strtok(NULL,delim);
 	}
 	av[i] = NULL;
-	free(strcp);
 	return (av);
 }
