@@ -1,16 +1,27 @@
 #include "shell.h"
 
-char *_readline()
+char *readline(char **av, char **fold);
+int getac(char *str);
+char **getav(char *str, int ac, char **av);
+char *readline();
+void print(char *buff);
+
+
+
+char *readline(char **av, char **fold)
 {
 	char *cmd = NULL;
-	size_t n = 0;
 
 	print("$ ");
 
-	if (getline(&cmd, &n, stdin) == -1)
+	cmd = _getline();
+	printf("%s\n", cmd);
+	if (cmd == NULL)
 	{
 		print("\n");
 		free(cmd);
+		cleanup(fold);
+		cleanup(av);
 		exit(0);
 	}
 	return (cmd);
@@ -29,12 +40,12 @@ int getac(char *str)
 	if(str == NULL)
 		return (-1);
 
-	strcp = strdup(str);
-	token = strtok(strcp, delim);
+	strcp = _strdup(str);
+	token = _strtok(strcp, delim);
 
 	while(token)
 	{
-		token = strtok(NULL,delim);
+		token = _strtok(NULL,delim);
 		ac++;
 	}
 	free(strcp);
@@ -62,16 +73,74 @@ char **getav(char *str, int ac, char **av)
 	} else
 		return (NULL);
 
-	strcp = strdup(str);
+	strcp = _strdup(str);
 
-	token = strtok(strcp, delim);
+	token = _strtok(strcp, delim);
 
 	while(token)
 	{
-		av[i++] = strdup(token);
-		token = strtok(NULL,delim);
+		av[i++] = _strdup(token);
+		token = _strtok(NULL,delim);
 	}
 	av[i] = NULL;
 	free(strcp);
 	return (av);
 }
+
+
+char *_getline()
+{
+	static char buffer[BUFF_SIZE];
+	static ssize_t scanned = 0;
+	static ssize_t cursor = 0;
+
+	ssize_t i = 0;
+	char* line = NULL;
+
+
+	while(1)
+	{
+		if (cursor == scanned)
+		{
+			scanned = read(0, buffer, BUFF_SIZE);
+
+			if (scanned <= 0)
+			{
+				if (line != NULL)
+					free(line);
+				return (NULL);
+			}
+		}
+
+		cursor = 0;
+		while (cursor < scanned)
+		{
+			line = realloc(line, (i + 1) * sizeof(char));
+			line[i++] = buffer[cursor];
+
+			if (buffer[cursor] == '\n')
+			{
+				cursor++;
+				line[i] = '\0';
+				return (line);
+			}
+			cursor++;
+		}
+	}
+}
+
+/**
+ * print - prints a buffer to the standard output
+ * @buff: pointer to the buffer to print
+ */
+void print(char *buff)
+{
+	size_t n = 0;
+
+	if(buff != NULL)
+	{
+		n = _strlen(buff);
+		write(1, buff, n);
+	}
+}
+

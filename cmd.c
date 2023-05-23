@@ -3,17 +3,20 @@
 int main()
 {
 	char *cmd = NULL, **av = NULL;
-       	int ac;
+	int ac;
+	char **fold = helpwhich();
 
-       	while (1)
+	while (1)
 	{
-
-		cmd = _readline();
+		cmd = readline(av, fold);
 		ac = getac(cmd);
-		av = getav(cmd, ac, av);
 
-		if (!exit_status(av))
-			start_proc(av);
+		if (ac > 0)
+		{
+			av = getav(cmd, ac, av);
+			exit_status(av, fold);
+			start_proc(av, fold);
+		}
 	}
 	return (0);
 }

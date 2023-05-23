@@ -1,74 +1,28 @@
 #include "shell.h"
 
 /**
- * exit_status - exits shell with a status
- * @status: integer
- *
- */
-
-int exit_status(char **av)
-{
-	int status = 0;
-	size_t i = 0;
-
-	if (av == NULL)
-		return (0);
-
-	if(strcmp(av[0], "exit")== 0)
-	{
-		if (av[1] != NULL)
-		{
-			while (isdigit(av[1][i]))
-				i++;
-
-			if (i == strlen(av[1]))
-			{
-				if (av[2] != NULL)
-				{
-					i = 0;
-					while (isdigit(av[2][i]))
-						i++;
-					if (i == strlen(av[2]))
-					{
-						print("hsh: exit: too many arguments\n");
-						return (1);
-					}
-				}
-
-				status = atoi(av[1]);
-			}
-		}
-
-		for(i = 0; av[i] != NULL; i++)
-			free(av[i]);
-		exit(status);
-	}
-	return (0);
-}
-/**
  * start_proc - starts a new process if a executable is found
  * @av: array of pointers
  */
 
-void start_proc(char **av)
+void start_proc(char **av, char **fold)
 {
 	pid_t proc;
 	char *fullpath = NULL;
 
 	if (av != NULL)
 	{
-		fullpath = isapath(fullpath, av[0]);
+		fullpath = _which(av, fold);
 
 		if(fullpath != NULL)
 		{
-			av[0] = strdup(fullpath);
-			free(fullpath);
 			proc = fork();
+
 			if (proc == 0)
 			{
-				if (execve(av[0], av, NULL) == -1)
+				if (execve(fullpath, av, NULL) == -1)
 				{
-					perror("Error:");
+					perror("Error");
 					exit(-1);
 				}
 			} else if (proc == -1)
@@ -78,49 +32,74 @@ void start_proc(char **av)
 				wait(NULL);
 			}
 		} else
-			perror("command not found");
+		{
+			perror(": command not found");
+		}
+		free(fullpath);
 	}
 }
 
 /**
- * print - prints a buffer to the standard output
- * @buff: pointer to the buffer to print
+ * exit_status - exits shell with a status
+ * @status: integer
+ *
  */
-void print(char *buff)
-{
-	size_t n = 0;
 
-	if(buff != NULL)
+int exit_status(char **av, char **fold)
+{
+	int status = 0;
+	size_t i = 0;
+
+	if (av == NULL)
+		return (0);
+
+	if(_strcmp(av[0], "exit")== 0)
 	{
-		n = strlen(buff);
-		write(1, buff, n);
+		if (av[1] != NULL)
+		{
+			while (_isdigit(av[1][i]))
+				i++;
+
+			if (i == _strlen(av[1]))
+			{
+				if (av[2] != NULL)
+				{
+					i = 0;
+					while (_isdigit(av[2][i]))
+						i++;
+					if (i == _strlen(av[2]))
+					{
+						print("hsh: exit: too many arguments\n");
+						return (1);
+					}
+				}
+
+				status = _atoi(av[1]);
+			}
+		}
+
+		cleanup(av);
+		cleanup(fold);
+		exit(status);
 	}
+	return (0);
 }
-
 /**
- * isapath - checks if a given path command is valid
- * @str: command name
- * Return: 0 if it exists and -1 otherwise
+ * cleanup - frees the memory dynamic array of pointers
+ *@buffer: the array to be freed
  */
-char *isapath(char *path, char *cmd)
+void cleanup(char **buffer)
 {
-	char *pathcpy = NULL;
+	int i = 0;
 
-	path = "/bin";
-	pathcpy = malloc(strlen(path) + strlen(cmd) + 2);
+	if (buffer == NULL)
+		return;
 
-	if (pathcpy == NULL)
-		return (NULL);
-
-	strcpy(pathcpy, path);
-	strcat(pathcpy, "/");
-	strcat(pathcpy, cmd);
-
-	if (access(pathcpy, F_OK) == -1)
+	while (buffer[i] != NULL)
 	{
-		free(pathcpy);
-		return (NULL);
+		free(buffer[i]);
+		i++;
 	}
+	free(buffer);
 
-	return (pathcpy);
 }
