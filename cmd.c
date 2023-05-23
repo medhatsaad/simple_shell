@@ -13,7 +13,7 @@ int main(void)
 
 	while (1)
 	{
-		print("$ ");
+		print("($) ");
 
 		if (getline(&cmd, &n, stdin) == -1)
 		{
