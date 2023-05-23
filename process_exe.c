@@ -1,7 +1,6 @@
 #include "shell.h"
 
 /**
-<<<<<<< HEAD
  * exit_status - exits shell with a status
  * @status: integer
  *
@@ -47,8 +46,6 @@ int exit_status(char **av)
 	return (0);
 }
 /**
-=======
->>>>>>> medhat
  * start_proc - starts a new process if a executable is found
  * @av: array of pointers
  */
@@ -63,7 +60,7 @@ void start_proc(char **av)
 	{
 		fullpath = _which(av);
 		
-		if (!_strcmp(fullpath, "1"))
+		if (_strcmp(fullpath, "1") != 0)
 		{
 			if (fullpath != NULL)
 			{	av[0] = _strcp(fullpath);

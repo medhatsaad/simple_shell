@@ -23,7 +23,7 @@ void _cd(char **argv)
 	_wd = getcwd(NULL, 0);
 	if(_dir)
 	{
-		if (_strcmp(_dir, "-"))
+		if (_strcmp(_dir, "-") == 0)
 			pathname = _getenv("HOME");
 		else if (_dir[0] == '/')
 			pathname = _dir;

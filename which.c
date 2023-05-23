@@ -14,7 +14,7 @@ char *_getenv(char *_varname)
 	{
 		line = _strcp(environ[i]);
 		envvar = strtok(line, "=");
-		if (_strcmp(envvar, _varname))
+		if (_strcmp(envvar, _varname) == 0)
 		{
 			dirlist = _strcp(strtok(NULL, "="));
 			free(line);

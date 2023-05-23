@@ -7,22 +7,22 @@
 int checkbuiltin(char **argv)
 {
 
-	if (_strcmp(*argv, "env"))
+	if (_strcmp(*argv, "env") == 0)
 	{
 		_env();
 		return (1);
 	}
-	if (_strcmp(*argv, "setenv"))
+	if (_strcmp(*argv, "setenv") == 0)
 	{
 		_setenv(argv);
 		return (1);
 	}
-	if (_strcmp(*argv, "unsetenv"))
+	if (_strcmp(*argv, "unsetenv") == 0)
 	{
 		_unsetenv(argv);
 		return (1);
 	}
-	if (_strcmp(*argv, "cd"))
+	if (_strcmp(*argv, "cd") == 0)
 	{
 		_cd(argv);
 		return (1);
@@ -72,7 +72,7 @@ int _ggetenv(char *var)
 	while (environ[i])
 	{
 		_env = _strcp(environ[i]);
-		if (_strcmp(strtok(_env, "="), var))
+		if (_strcmp(strtok(_env, "="), var) == 0)
 		{
 			j = i;
 			break;
