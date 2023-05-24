@@ -5,16 +5,16 @@
  * @av: array of pointers
  */
 
-void start_proc(char **av, char **fold)
+void start_proc(char **av)
 {
 	pid_t proc;
 	char *fullpath = NULL;
 
 	if (av != NULL)
 	{
-		fullpath = _which(av, fold);
+		fullpath = _which(av);
 
-		if(fullpath != NULL)
+		if (fullpath != NULL)
 		{
 			proc = fork();
 
@@ -35,7 +35,6 @@ void start_proc(char **av, char **fold)
 		{
 			perror(": command not found");
 		}
-		free(fullpath);
 	}
 }
 
@@ -45,7 +44,7 @@ void start_proc(char **av, char **fold)
  *
  */
 
-int exit_status(char **av, char **fold)
+int exit_status(char **av)
 {
 	int status = 0;
 	size_t i = 0;
@@ -53,7 +52,7 @@ int exit_status(char **av, char **fold)
 	if (av == NULL)
 		return (0);
 
-	if(_strcmp(av[0], "exit")== 0)
+	if (_strcmp(av[0], "exit") == 0)
 	{
 		if (av[1] != NULL)
 		{
@@ -78,28 +77,9 @@ int exit_status(char **av, char **fold)
 			}
 		}
 
-		cleanup(av);
-		cleanup(fold);
+		for (i = 0; av[i] != NULL; i++)
+			free(av[i]);
 		exit(status);
 	}
 	return (0);
-}
-/**
- * cleanup - frees the memory dynamic array of pointers
- *@buffer: the array to be freed
- */
-void cleanup(char **buffer)
-{
-	int i = 0;
-
-	if (buffer == NULL)
-		return;
-
-	while (buffer[i] != NULL)
-	{
-		free(buffer[i]);
-		i++;
-	}
-	free(buffer);
-
 }

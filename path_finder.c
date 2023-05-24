@@ -1,9 +1,4 @@
 #include "shell.h"
-char *_getenv(char *str);
-char **helpwhich();
-char *_which(char **av, char **fold);
-
-extern char **environ;
 
 /**
  * _getenv - gets the value of an environment variable.
@@ -35,72 +30,60 @@ char *_getenv(char *str)
  * @av: Array of pointers to command line args.
  * Return: The full path of the cmd executable if found.
  */
-char **helpwhich()
+char *_which(char **av)
 {
-	char **fold = NULL, *delim = ":";
-	int i = 0, dir = 0, ln = 0, lnmax = 0;
-	size_t k = 0;
-	char *path = _getenv("PATH");
+	char *fullpath = NULL, *path = NULL, *pathdup, *delim = ":", *token = NULL;
+	int found = 0;
 
-	for (; k < _strlen(path); k++)
+	pathdup = _getenv("PATH");
+	path = _strdup(pathdup);
+	token = _strtok(path, delim);
+
+	while (token != NULL)
 	{
-		if (path[k] == ':')
-		{
-			lnmax = (ln > lnmax) ? ln : lnmax;
-			ln = 0;
-			dir++;
-		} else
-			ln++;
-	}
-
-	fold = (char **) malloc(sizeof(char*) * (dir + 2));
-
-	for (i = 0; i < (dir + 1); i++)
-	{
-		fold[i] = (char*)malloc(lnmax);
-		if (fold[i] == NULL)
-			return(NULL);
-	}
-	i = 0;
-      	fold[i] = _strtok(path, delim);
-
-	while (fold[i++] != NULL)
-	{
-		fold[i] = _strtok(NULL, delim);
-	}
-	fold[i] = NULL;
-
-	return (fold);
-}
-
-char *_which(char **av, char **fold)
-{
-
-	char *path = NULL;
-	int found = 0, i = 0;
-
-	if (access(av[0], F_OK) == 0)
-		return(av[0]);
-
-	path = (char *)malloc(_strlen(av[0]) + _strlen(fold[0]) + 2);
-
-	if (path == NULL)
-		return(NULL);
-
-	while(found == 0 && fold[i] != NULL)
-	{
-		_strcpy(path,fold[i]);
-		_strcat(path, "/");
-		_strcat(path, av[0]);
-
-		if (access(path, F_OK) == 0)
+		fullpath = isapath(token, av[0]);
+		if (found == 0 && fullpath != NULL)
 		{
 			found = 1;
-			return (path);
+			break;
 		}
-
-		i++;
+		token = _strtok(NULL, delim);
 	}
 	free(path);
+	if (found)
+		return (fullpath);
+
 	return (NULL);
+}
+
+/**
+ *isapath - checks if a given path command is valid
+ * @str: command name
+ * Return: 0 if it exists and -1 otherwise
+ */
+char *isapath(char *path, char *cmd)
+{
+
+	char *pathcpy = NULL;
+
+
+	if (access(cmd, F_OK) == 0)
+		return (cmd);
+
+	pathcpy = (char *) malloc(_strlen(path) + _strlen(cmd) + 2);
+
+	if (pathcpy == NULL)
+		return (NULL);
+
+	_strcpy(pathcpy, path);
+	_strcat(pathcpy, "/");
+	_strcat(pathcpy, cmd);
+
+
+	if (access(pathcpy, F_OK) == -1)
+	{
+		free(pathcpy);
+		return (NULL);
+	}
+	return (pathcpy);
 }

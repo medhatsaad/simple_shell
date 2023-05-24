@@ -3,7 +3,7 @@
 int _isdigit(int c);
 int _atoi(char *s);
 int compare_cs(char c, char *str);
-char *_strtok(char *str, char* delimit);
+char *_strtok(char *str, char *delimit);
 int _strncmp(char *str1, char *str2, size_t n);
 
 /**
@@ -57,7 +57,7 @@ int compare_cs(char c, char *str)
 {
 	size_t j = 0;
 
-	for(j = 0; j < _strlen(str); j++)
+	for (j = 0; j < _strlen(str); j++)
 	{
 		if (c == str[j])
 			return (0);
@@ -70,7 +70,7 @@ int compare_cs(char c, char *str)
  *@delimit: string delimiters
  *Return: pointer to the first token
  */
-char *_strtok(char *str, char* delimit)
+char *_strtok(char *str, char *delimit)
 {
 	char *begin = NULL;
 	static char *end;
@@ -80,9 +80,9 @@ char *_strtok(char *str, char* delimit)
 		end = str;
 
 	if (*end == '\0' || end == NULL)
-		return(NULL);
+		return (NULL);
 
-	while(*end != '\0')
+	while (*end != '\0')
 	{
 		if (compare_cs(*end, delimit))
 		{
@@ -93,7 +93,7 @@ char *_strtok(char *str, char* delimit)
 	}
 	if (begin == NULL)
 	{
-		return NULL;
+		return (NULL);
 	}
 	while (*end != '\0')
 	{
