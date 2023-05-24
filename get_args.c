@@ -56,12 +56,15 @@ char **getav(char *str, int ac, char **av)
 {
 	int i = 0;
 	char *token, *delim = " \n";
+ 
+	if (ac == -1)
+		return (NULL);
 
 	if (av == NULL)
 		av = malloc(sizeof(char *) * (ac + 1));
 	else
 		av = realloc(av, sizeof(char *) * (ac + 1));
-	av = malloc(sizeof(char *) * (ac + 1));
+	
 
 	i = 0;
 	token = strtok(str, delim);

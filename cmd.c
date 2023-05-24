@@ -22,10 +22,12 @@ int main(void)
 			exit(0);
 		}
 
-		ac = getac(cmd);
-		av = getav(cmd, ac, av);
-		start_proc(av);
-
+		if (cmd != NULL && _strcmp(cmd, "\n") != 0)
+		{
+			ac = getac(cmd);
+			av = getav(cmd, ac, av);
+			start_proc(av);
+		}
 	}
 	exit(0);
 }
