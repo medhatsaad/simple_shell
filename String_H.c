@@ -15,6 +15,9 @@ size_t _strlen(char *s)
 	size_t len;
 
 	len = 0;
+
+	if (s == NULL)
+		return (0);
 	while (s[len] != '\0')
 	{
 		++len;
@@ -51,7 +54,12 @@ int _strcmp(char *s1, char *s2)
 	char ret;
 	size_t k = 0;
 
-	while (s1[k] != '\0' && s1[k] == s2[k])
+	if (s1 == NULL && s2 == NULL)
+		return (0);
+	if (s1 == NULL || s2 == NULL)
+		return (-1);
+
+	while (s1[k] == s2[k])
 		k++;
 	ret = s1[k] - s2[k];
 

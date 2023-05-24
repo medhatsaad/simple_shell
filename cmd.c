@@ -13,7 +13,7 @@ int main(void)
 
 	while (1)
 	{
-		print("($) ");
+		print("$ ");
 
 		if (getline(&cmd, &n, stdin) == -1)
 		{
@@ -22,7 +22,7 @@ int main(void)
 			exit(0);
 		}
 
-		if (cmd != NULL && _strcmp(cmd, "\n") != 0)
+		if (cmd != NULL && cmd[0] != '\n')
 		{
 			ac = getac(cmd);
 			av = getav(cmd, ac, av);
