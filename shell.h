@@ -18,6 +18,7 @@ int exits(char *status);
 size_t _strlen(char *p);
 int _strcmp(char *a, char *b);
 char *_strcp(char *p);
+char *_strdup(char *p);
 char *_addstring(char *a, char *b);
 char *_which(char **argv);
 char **_getdirenv();

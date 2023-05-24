@@ -56,6 +56,7 @@ void start_proc(char **av)
 	pid_t proc;
 
 	char *fullpath;
+	char *_error = av[0];
 
 	if (av != NULL)
 	{
@@ -69,7 +70,7 @@ void start_proc(char **av)
 				proc = fork();
 				if (proc == 0)
 				{
-					if (execve(av[0], av, NULL) == -1)
+					if (execve(av[0], av, environ) == -1)
 					{
 						perror("Error:");
 						exit(-1);
@@ -81,7 +82,7 @@ void start_proc(char **av)
 					wait(NULL);
 				}
 			} else
-				perror("command not found");
+				perror(_error);
 		}
 	}
 }
