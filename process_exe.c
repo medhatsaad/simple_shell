@@ -53,7 +53,7 @@ int exit_status(char **av)
 
 void start_proc(char **av)
 {
-	
+	/**char *newenviron[] = {"LANG=en_US.UTF-8", 0};*/
 	pid_t proc;
 	char *fullpath = NULL;
 
@@ -95,18 +95,21 @@ void non_interactive(void)
 	char **av = NULL;
 	char *cmd = NULL;
 	size_t n = 0;
-	int ac;
+	int ac, s = 1;
 
 	if (!(isatty(STDIN_FILENO)))
 	{
-		if (getline(&cmd, &n, stdin) == -1)
+		s = getline(&cmd, &n, stdin);
+		while ( s != -1)
 		{
-			free(cmd);
-			exit(0);
+			ac = getac(cmd);
+			av = getav(cmd, ac, av);
+			start_proc(av);
+			s = getline(&cmd, &n, stdin);
 		}
-		ac = getac(cmd);
-		av = getav(cmd, ac, av);
-		start_proc(av);
+		
+		free(cmd);
+			exit(0);
 		exit(0);
 	}
 }
