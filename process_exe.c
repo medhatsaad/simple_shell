@@ -7,44 +7,36 @@
  * * Return: 0
  */
 
-int exit_status(char **av)
+void exit_status(char **av)
 {
 	int status = 0;
 	size_t i = 0;
 
-	if (av == NULL)
-		return (0);
-
-	if (_strcmp(av[0], "exit") == 0)
+	if (av[1] != NULL)
 	{
-		if (av[1] != NULL)
+		while (isdigit(av[1][i]))
+			i++;
+
+		if (i == strlen(av[1]))
 		{
-			while (isdigit(av[1][i]))
-				i++;
-
-			if (i == strlen(av[1]))
+			if (av[2] != NULL)
 			{
-				if (av[2] != NULL)
+				i = 0;
+				while (isdigit(av[2][i]))
+					i++;
+				if (i == strlen(av[2]))
 				{
-					i = 0;
-					while (isdigit(av[2][i]))
-						i++;
-					if (i == strlen(av[2]))
-					{
-						print("hsh: exit: too many arguments\n");
-						return (1);
-					}
+					print("hsh: exit: too many arguments\n");
+					return;
 				}
-
-				status = atoi(av[1]);
 			}
-		}
 
-		for (i = 0; av[i] != NULL; i++)
-			free(av[i]);
-		exit(status);
+			status = atoi(av[1]);
+		}
 	}
-	return (0);
+
+	_freearr(av);
+	exit(status);
 }
 /**
  * start_proc - starts a new process if a executable is found
@@ -84,7 +76,6 @@ void start_proc(char **av)
 		}
 
 		_freearr(av);
-		
 	}
 }
 /**
@@ -104,12 +95,13 @@ void non_interactive(void)
 		{
 			ac = getac(cmd);
 			av = getav(cmd, ac, av);
+			if (_strcmp(*av, "exit") == 0)
+				exit_status(av);
 			start_proc(av);
 			s = getline(&cmd, &n, stdin);
 		}
-		
+
 		free(cmd);
-			exit(0);
 		exit(0);
 	}
 }

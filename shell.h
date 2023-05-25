@@ -17,7 +17,7 @@ void print(char *buff);
 void start_proc(char **av);
 int getac(char *str);
 char **getav(char *str, int ac, char **av);
-int exit_status(char **av);
+void exit_status(char **av);
 size_t _strlen(char *p);
 int _strcmp(char *a, char *b);
 char *_strcp(char *p);

@@ -139,6 +139,9 @@ void _freearr(char **arr)
 {
 	int i;
 
+	if (arr == NULL)
+		return;
+
 	for (i = 0; arr[i] != NULL; i++)
 		free(arr[i]);
 	free(arr[i]);
