@@ -36,7 +36,7 @@ char **_getdirenv()
 	char *dirname, *dirlist, *_dirlist;
 	char **dirarr = NULL;
 
-	dirlist = _getenv("PATH");
+	dirlist = _mgetenv("PATH");
 	_dirlist = _strcp(dirlist);
 	if (strtok(_dirlist, ":") != NULL)
 	{
@@ -99,26 +99,29 @@ char *_mwhich(char **argv)
 	if (checkbuiltin(argv))
 		return ("1");
 	else
-		return (_envcheck(*argv));
+		return (_pathchecker(argv));
 }
 /**
- * _envcheck - check command vs path env
+ * _pathchecker - check command vs path env
  * @argv: input command
  * Return: full path
  */
-char *_envcheck(char *argv)
+char *_pathchecker(char **argv)
 {
 	char **dirarr, *pathname, *path;
 	int i;
 
-	path = _addstring("/", argv);
+	if (argv[0][0] == '/' || argv[0][0] == '.')
+		return (argv[0]);
+
+	path = _addstring("/", argv[0]);
 	dirarr = _getdirenv();
 	if (dirarr == NULL)
-		return (NULL);
+		return (argv[0]);
 	for (i = 0; dirarr[i] != NULL; i++)
 	{
 		pathname = _addstring(dirarr[i], path);
-		if (access(pathname, X_OK) == 0)
+		if (access(pathname, F_OK) == 0)
 		{
 			_freearr(dirarr);
 			free(path);
@@ -128,7 +131,7 @@ char *_envcheck(char *argv)
 	}
 	_freearr(dirarr);
 	free(path);
-	return (NULL);
+	return (argv[0]);
 }
 
 /**

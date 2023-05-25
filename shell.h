@@ -44,6 +44,9 @@ char *_strtok(char *str, char *delimit);
 char *_strcat(char *dest, char *src);
 int _strncmp(char *str1, char *str2, size_t n);
 void _freearr(char **arr);
+char *_pathchecker(char **argv);
+char **_getdirenv();
+char *_mgetenv(char *_varname);
 
 
 

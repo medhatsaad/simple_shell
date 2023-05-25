@@ -56,12 +56,12 @@ void start_proc(char **av)
 	/**char *newenviron[] = {"LANG=en_US.UTF-8", 0};*/
 	pid_t proc;
 	char *fullpath = NULL;
-
+	
 	if (av != NULL)
 	{
-		fullpath = av[0];
-
-		if (access(fullpath, X_OK) == 0)
+		fullpath = _pathchecker(av);
+		
+		if (access(fullpath, F_OK) == 0)
 		{
 			proc = fork();
 
