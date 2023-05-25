@@ -53,7 +53,7 @@ int exit_status(char **av)
 
 void start_proc(char **av)
 {
-	char *newenviron[] = {"LANG=en_US.UTF-8", 0};
+	
 	pid_t proc;
 	char *fullpath = NULL;
 
@@ -67,7 +67,7 @@ void start_proc(char **av)
 
 			if (proc == 0)
 			{
-				if (execve(fullpath, av, newenviron) == -1)
+				if (execve(fullpath, av, environ) == -1)
 				{
 					perror("execution error");
 					exit(-1);
