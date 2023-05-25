@@ -16,9 +16,11 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 		cmd = readline();
 		ac = getac(cmd);
 		av = getav(cmd, ac, av);
-		free(cmd);
+		
 		if (!exit_status(av))
 			start_proc(av);
+	
+		free(cmd);
 	}
 	return (0);
 }

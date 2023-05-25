@@ -60,7 +60,7 @@ void start_proc(char **av)
 	{
 		fullpath = av[0];
 
-		if (fullpath != NULL)
+		if (access(fullpath, X_OK) == 0)
 		{
 			proc = fork();
 
@@ -68,20 +68,22 @@ void start_proc(char **av)
 			{
 				if (execve(fullpath, av, environ) == -1)
 				{
-					perror("Error");
+					perror("execution error");
 					exit(-1);
 				}
 			} else if (proc == -1)
 				perror("Failed to fork");
 			else
 			{
-				_freearr(av);
 				wait(NULL);
 			}
 		} else
 		{
-			perror(": command not found");
+			perror(av[0]);
 		}
+
+		_freearr(av);
+		
 	}
 }
 /**
