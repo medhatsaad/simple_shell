@@ -10,7 +10,7 @@
 extern char **environ;
 #define BUFF_SIZE 1024
 
-void non_interactive();
+void non_interactive(void);
 char *readline();
 char *isapath(char *path, char *cmd);
 void print(char *buff);

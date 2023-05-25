@@ -1,6 +1,9 @@
 #include "shell.h"
 /**
  * main - entry point
+ *@argc: number of arguments
+ *@argv: array of the arguments passed into cmd
+ *Return: 0
  */
 int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 {
@@ -10,7 +13,7 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 	while (1)
 	{
 		non_interactive();
-	       	cmd = readline();
+		cmd = readline();
 		ac = getac(cmd);
 		av = getav(cmd, ac, av);
 

@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * _readline - get line from stdin
+ * readline - get line from stdin
  * Return: string
 */
 char *readline()

@@ -83,7 +83,9 @@ void start_proc(char **av)
 		}
 	}
 }
-
+/**
+ *non_interactive - should handle the non interactive mode
+ */
 void non_interactive(void)
 {
 	char **av = NULL;
