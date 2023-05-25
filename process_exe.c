@@ -58,7 +58,7 @@ void start_proc(char **av)
 
 	if (av != NULL)
 	{
-		fullpath = _which(av);
+		fullpath = av[0];
 
 		if (fullpath != NULL)
 		{
@@ -66,7 +66,7 @@ void start_proc(char **av)
 
 			if (proc == 0)
 			{
-				if (execve(fullpath, av, NULL) == -1)
+				if (execve(fullpath, av, environ) == -1)
 				{
 					perror("Error");
 					exit(-1);
@@ -75,6 +75,7 @@ void start_proc(char **av)
 				perror("Failed to fork");
 			else
 			{
+				_freearr(av);
 				wait(NULL);
 			}
 		} else

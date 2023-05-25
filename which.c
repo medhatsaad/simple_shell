@@ -4,7 +4,7 @@
  * @_varname: env var name
  * Return: string of DIRs separated by ':"
  */
-char *_getenv(char *_varname)
+char *_mgetenv(char *_varname)
 {
 	int i;
 	char *line, *envvar;
@@ -70,7 +70,7 @@ char **_getdirenv()
  *
  * Return: command appended to path
  */
-char *_which(char **argv)
+char *_mwhich(char **argv)
 {
 	char *pathname, *_wd, *arg0;
 	int i;

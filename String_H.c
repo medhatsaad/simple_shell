@@ -76,7 +76,7 @@ int _strcmp(char *s1, char *s2)
  */
 char *_strdup(char *str)
 {
-	size_t i;
+	size_t i, j;
 	char *cpy;
 
 	if (str == NULL)
@@ -91,11 +91,15 @@ char *_strdup(char *str)
 	if (cpy == NULL)
 		return (NULL);
 
-	while (i)
+	/** while (i)
 	{
 		cpy[i - 1] = str[i - 1];
 		i--;
-	}
+	} */
+
+	for (j = 0; j < i ; j++)
+		cpy[j] = str[j];
+	cpy[j] = '\0';
 	return (cpy);
 }
 /**

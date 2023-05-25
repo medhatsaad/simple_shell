@@ -43,6 +43,7 @@ int compare_cs(char c, char *str);
 char *_strtok(char *str, char *delimit);
 char *_strcat(char *dest, char *src);
 int _strncmp(char *str1, char *str2, size_t n);
+void _freearr(char **arr);
 
 
 
