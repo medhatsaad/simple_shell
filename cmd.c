@@ -12,7 +12,7 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 
 	while (1)
 	{
-		/** non_interactive(); */
+		non_interactive(); 
 		cmd = readline();
 		ac = getac(cmd);
 		av = getav(cmd, ac, av);
