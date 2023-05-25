@@ -1,7 +1,9 @@
 #include "shell.h"
+
 /**
- * main - entry point
- */
+ * main - main function
+ * Return: 1
+*/
 int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 {
 	char *cmd = NULL, **av = NULL;
@@ -9,13 +11,12 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 
 	while (1)
 	{
+
 		non_interactive();
-	       	cmd = readline();
+		readline();
 		ac = getac(cmd);
 		av = getav(cmd, ac, av);
-
-		if (!exit_status(av))
-			start_proc(av);
+		start_proc(av);
 	}
-	return (0);
+	exit(0);
 }

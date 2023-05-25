@@ -15,7 +15,7 @@ int exit_status(char **av)
 	if (av == NULL)
 		return (0);
 
-	if (strcmp(av[0], "exit") == 0)
+	if (_strcmp(av[0], "exit") == 0)
 	{
 		if (av[1] != NULL)
 		{
@@ -54,49 +54,53 @@ int exit_status(char **av)
 void start_proc(char **av)
 {
 	pid_t proc;
-
-	char *fullpath;
-	char *_error = av[0];
+	char *fullpath = NULL;
 
 	if (av != NULL)
 	{
 		fullpath = _which(av);
 
-		if (_strcmp(fullpath, "1") != 0)
+		if (fullpath != NULL)
 		{
-			if (fullpath != NULL)
-			{	av[0] = _strcp(fullpath);
-				free(fullpath);
-				proc = fork();
-				if (proc == 0)
+			proc = fork();
+
+			if (proc == 0)
+			{
+				if (execve(fullpath, av, NULL) == -1)
 				{
-					if (execve(av[0], av, environ) == -1)
-					{
-						perror("Error:");
-						exit(-1);
-					}
-				} else if (proc == -1)
-					perror("Failed to fork");
-				else
-				{
-					wait(NULL);
+					perror("Error");
+					exit(-1);
 				}
-			} else
-				perror(_error);
+			} else if (proc == -1)
+				perror("Failed to fork");
+			else
+			{
+				wait(NULL);
+			}
+		} else
+		{
+			perror(": command not found");
 		}
 	}
 }
-/**
- * print - prints a buffer to the standard output
- * @buff: pointer to the buffer to print
- */
-void print(char *buff)
-{
-	size_t n = 0;
 
-	if (buff != NULL)
+void non_interactive(void)
+{
+	char **av = NULL;
+	char *cmd = NULL;
+	size_t n = 0;
+	int ac;
+
+	if (!(isatty(STDIN_FILENO)))
 	{
-		n = strlen(buff);
-		write(1, buff, n);
+		if (getline(&cmd, &n, stdin) == -1)
+		{
+			free(cmd);
+			exit(0);
+		}
+		ac = getac(cmd);
+		av = getav(cmd, ac, av);
+		start_proc(av);
+		exit(0);
 	}
 }

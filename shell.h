@@ -8,13 +8,16 @@
 #include <sys/wait.h>
 #include <ctype.h>
 extern char **environ;
+#define BUFF_SIZE 1024
+
+void non_interactive();
+char *readline();
 char *isapath(char *path, char *cmd);
 void print(char *buff);
 void start_proc(char **av);
 int getac(char *str);
 char **getav(char *str, int ac, char **av);
 int exit_status(char **av);
-int exits(char *status);
 size_t _strlen(char *p);
 int _strcmp(char *a, char *b);
 char *_strcp(char *p);
@@ -33,4 +36,35 @@ void _realloc(char *newenv);
 void _unsetenv(char **argv);
 int _ggetenv(char *var);
 void _cd(char **argv);
+char *_strcpy(char *dest, char *src);
+int _isdigit(int c);
+int _atoi(char *s);
+int compare_cs(char c, char *str);
+char *_strtok(char *str, char *delimit);
+char *_strcat(char *dest, char *src);
+int _strncmp(char *str1, char *str2, size_t n);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #endif

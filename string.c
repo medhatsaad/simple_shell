@@ -28,7 +28,7 @@ char *_strcp(char *p)
  * @a: string1
  * @b: string2
  * Return: string
-*/
+ */
 char *_addstring(char *a, char *b)
 {
 	int i, sizea = 0, sizeb = 0, size = 0;
