@@ -51,7 +51,8 @@ void _freearr(char **arr);
 char *_pathchecker(char **argv);
 char **_getdirenv();
 char *_mgetenv(char *_varname);
-
+char *_mwhiche(char **av);
+void _mexit(char **av, char *p);
 
 
 
