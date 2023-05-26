@@ -88,22 +88,26 @@ void non_interactive(char **argv)
 	char **av = NULL;
 	char *cmd = NULL;
 	size_t n = 0;
-	int ac, s = 1;
+	int ac;
 
 	if (!(isatty(STDIN_FILENO)))
 	{
-		s = getline(&cmd, &n, stdin);
-		while (s != -1)
+		if (getline(&cmd, &n, stdin) == -1)
 		{
-			ac = getac(cmd);
-			av = getav(cmd, ac, av);
+			_freearr(av);
+			free(cmd);
+			exit(0);
+		}
+		ac = getac(cmd);
+		av = getav(cmd, ac, av);
 
+		if (av != NULL)
+		{
 			if (_strcmp(*av, "exit") == 0)
 				exit_status(ac, av, argv);
-			start_proc(av);
-			s = getline(&cmd, &n, stdin);
+			else
+				start_proc(av);
+			/*s = getline(&cmd, &n, stdin);*/
 		}
-		free(cmd);
-		exit(0);
 	}
 }
