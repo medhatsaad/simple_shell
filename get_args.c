@@ -104,9 +104,9 @@ char **getav(char *str, int ac, char **av)
 	{
 		av = malloc(sizeof(char *) * (ac + 1));
 		/**if (av == NULL)
-			av = malloc(sizeof(char *) * (ac + 1));
-		else
-			av = realloc(av, sizeof(char *) * (ac + 1));*/
+		   av = malloc(sizeof(char *) * (ac + 1));
+		   else
+		   av = realloc(av, sizeof(char *) * (ac + 1));*/
 		if (av == NULL)
 			return (NULL);
 	} else
@@ -125,7 +125,6 @@ char **getav(char *str, int ac, char **av)
 	free(strcp);
 	return (av);
 }
-
 
 /**
  * print - prints a buffer to the standard output

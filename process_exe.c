@@ -6,31 +6,31 @@
  * * Return: 0
  */
 
-void exit_status(char **av)
+void exit_status(int ac, char **av, char **argv)
 {
 	int status = 0;
 	size_t i = 0;
 
-	if (av[1] != NULL)
+	if (ac > 2)
 	{
-		while (isdigit(av[1][i]))
+		print(argv[0]);
+	      	print(": exit: too many arguments\n");
+		return;
+	}
+	if (ac == 2)
+	{
+		while (_isdigit(av[1][i]))
 			i++;
 
-		if (i == strlen(av[1]))
+		if (i == _strlen(av[1]))
+			status = _atoi(av[1]);
+		else
 		{
-			if (av[2] != NULL)
-			{
-				i = 0;
-				while (isdigit(av[2][i]))
-					i++;
-				if (i == strlen(av[2]))
-				{
-					print("hsh: exit: too many arguments\n");
-					return;
-				}
-			}
-
-			status = atoi(av[1]);
+			print(argv[0]);
+			print(": 1: exit: Illegal number: ");
+			print(av[1]);
+			print("\n");
+			return;
 		}
 	}
 
@@ -81,7 +81,7 @@ void start_proc(char **av)
 /**
  *non_interactive - should handle the non interactive mode
  */
-void non_interactive(void)
+void non_interactive(char **argv)
 {
 	char **av = NULL;
 	char *cmd = NULL;
@@ -97,7 +97,7 @@ void non_interactive(void)
 			av = getav(cmd, ac, av);
 
 			if (_strcmp(*av, "exit") == 0)
-				exit_status(av);
+				exit_status(ac, av, argv);
 			start_proc(av);
 			s = getline(&cmd, &n, stdin);
 		}
