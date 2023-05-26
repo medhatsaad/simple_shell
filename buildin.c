@@ -28,11 +28,11 @@ int checkbuiltin(char **argv)
 		return (1);
 	}
 	/**
-	if (_strcmp(*argv, "exit") == 0)
-	{
-		exit_status(argv);
-		return (1);
-	}
+	*	if (_strcmp(*argv, "exit") == 0)
+	*	{
+	*		exit_status(argv);
+	*		return (1);
+	*	}
 	*/
 
 	return (0);

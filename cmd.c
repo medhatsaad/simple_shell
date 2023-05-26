@@ -25,7 +25,7 @@ int main(int argc __attribute__((unused)), char **argv)
 			exit_status(ac, av, argv);
 		} else
 			start_proc(av);
-		
+
 	}
 	return (0);
 }

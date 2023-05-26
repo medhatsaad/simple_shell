@@ -2,6 +2,8 @@
 /**
  * exit_status - exits shell with a status
  * @av: arg
+ * @ac: no of arg
+ * @argv: main function arg
  *
  * * Return: 0
  */
@@ -14,7 +16,7 @@ void exit_status(int ac, char **av, char **argv)
 	if (ac > 2)
 	{
 		print(argv[0]);
-	      	print(": exit: too many arguments\n");
+		print(": exit: too many arguments\n");
 		return;
 	}
 	if (ac == 2)
@@ -47,13 +49,13 @@ void start_proc(char **av)
 {
 	/**char *newenviron[] = {"LANG=en_US.UTF-8", 0};*/
 	pid_t proc;
-	char *fullpath = NULL, *msg, *msg1, *msg2;
-	
+	char *fullpath = NULL;
+
 	if (av != NULL)
 	{
-		fullpath = _pathchecker(av);
-		
-		if (access(fullpath, F_OK) == 0)
+		fullpath = _mwhiche(av);
+
+		if (fullpath != NULL)
 		{
 			proc = fork();
 
@@ -70,21 +72,16 @@ void start_proc(char **av)
 			{
 				wait(NULL);
 			}
-		} else
-		{
-			msg1 = _addstring(program_invocation_name, ": 1: ");
-			msg2 = _addstring(msg1,av[0]);
-			msg = _addstring(msg2, ": not found");
-			write(STDERR_FILENO,msg,_strlen(msg));
-			write(STDERR_FILENO,"\n",1);
-			exit(127);
-		}
-
 		_freearr(av);
+		free(fullpath);
+		}
+		else
+			_mexit(av, fullpath);
 	}
 }
 /**
- *non_interactive - should handle the non interactive mode
+ * non_interactive - should handle the non interactive mode
+ * @argv: arguments
  */
 void non_interactive(char **argv)
 {
@@ -92,12 +89,11 @@ void non_interactive(char **argv)
 	char *cmd = NULL;
 	size_t n = 0;
 	int ac, s = 1;
-	
 
 	if (!(isatty(STDIN_FILENO)))
 	{
 		s = getline(&cmd, &n, stdin);
-		while ( s != -1)
+		while (s != -1)
 		{
 			ac = getac(cmd);
 			av = getav(cmd, ac, av);

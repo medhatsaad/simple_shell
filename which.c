@@ -1,6 +1,6 @@
 # include "shell.h"
 /**
- * _getenv - extract list of directrories from environment variable
+ * _mgetenv - extract list of directrories from environment variable
  * @_varname: env var name
  * Return: string of DIRs separated by ':"
  */
@@ -72,41 +72,34 @@ char **_getdirenv()
 }
 
 /**
- * _which - search for the path of command
+ * _mwhiche - search for the path of command
  * @argv: command
  *
  * Return: command appended to path
  */
-char *_mwhich(char **argv)
+char *_mwhiche(char **argv)
 {
-	char *pathname, *_wd, *arg0;
-	int i;
+	char *pathname, *word, *temp;
 
-	arg0 = *argv;
-	if (*argv[0] == '/')
+	if (argv[0][0] == '	')
 	{
-		pathname = *argv;
-		if (access(pathname, X_OK) == 0)
-			return (pathname);
-		return (NULL);
+		temp = _strcp(argv[0]);
+		word = _strcp(strtok(temp,"	"));
+		free(temp);
 	}
-	_wd = getcwd(NULL, 0);
-	if (arg0[0] == '.' && arg0[1] == '/')
-	{
-		for (i = 0; arg0[i] != '\0'; i++)
-			arg0[i] = arg0[i + 1];
-		pathname = _addstring(_wd, *argv);
-		free(_wd);
-		printf("%s\n", pathname);
-		if (access(pathname, X_OK) == 0)
-			return (pathname);
-		return (NULL);
-	}
-	free(_wd);
-	if (checkbuiltin(argv))
-		return ("1");
 	else
-		return (_pathchecker(argv));
+		word = _strcp(argv[0]);
+	if (word[0] == '/' || word[0] == '.')
+	{
+		if (access(word, F_OK) == 0)
+			pathname = _strcp(word);
+		else
+			pathname = NULL;
+		free(word);
+		return (pathname);
+	}
+
+	return (_pathchecker(argv));
 }
 /**
  * _pathchecker - check command vs path env
@@ -115,40 +108,43 @@ char *_mwhich(char **argv)
  */
 char *_pathchecker(char **argv)
 {
-	char **dirarr, *pathname, *path, *msg, *msg1, *msg2, *msg3;
+	char **dirarr, *pathname, *path, *_pathname, *word, *temp;
 	int i;
 
-	if (argv[0][0] == '/' || argv[0][0] == '.')
-		return (argv[0]);
-	path = _addstring("/", argv[0]);
 	dirarr = _getdirenv();
-	if (dirarr == NULL)
-		{
-			if (_mgetenv("PWD") == NULL)
-				msg1 = _addstring("./",program_invocation_short_name);
-			else
-				msg1 = program_invocation_name;
-			msg2 = _addstring(msg1, ": 1: ");
-			msg3 = _addstring(msg2,argv[0]);
-			msg = _addstring(msg3, ": not found");
-			write(STDERR_FILENO,msg,_strlen(msg));
-			write(STDERR_FILENO,"\n",1);
-			exit(127);
-		}
+	if (dirarr == NULL || environ == NULL)
+	{
+		pathname = NULL;
+		return (pathname);
+	}
+	if (argv[0][0] == '	')
+	{
+		temp = _strcp(argv[0]);
+		word = _strcp(strtok(temp,"	"));
+		free(temp);
+	}
+	else
+		word = _strcp(argv[0]);
+
+	path = _addstring("/", word);
+	free(word);
 	for (i = 0; dirarr[i] != NULL; i++)
 	{
-		pathname = _addstring(dirarr[i], path);
-		if (access(pathname, F_OK) == 0)
+		_pathname = _addstring(dirarr[i], path);
+		if (access(_pathname, F_OK) == 0)
 		{
+			pathname = _strcp(_pathname);
 			_freearr(dirarr);
 			free(path);
+			free(_pathname);
 			return (pathname);
 		}
-		free(pathname);
+		free(_pathname);
 	}
 	_freearr(dirarr);
 	free(path);
-	return (argv[0]);
+	pathname = NULL;
+	return (pathname);
 }
 
 

@@ -91,11 +91,13 @@ char *_strdup(char *str)
 	if (cpy == NULL)
 		return (NULL);
 
-	/** while (i)
-	{
-		cpy[i - 1] = str[i - 1];
-		i--;
-	} */
+	/**
+	 *	 while (i)
+	 *	{
+	 *	cpy[i - 1] = str[i - 1];
+	 *	i--;
+	 *	}
+	 */
 
 	for (j = 0; j < i ; j++)
 		cpy[j] = str[j];
