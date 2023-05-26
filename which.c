@@ -111,6 +111,10 @@ char *_pathchecker(char **argv)
 	char **dirarr, *pathname, *path, *_pathname, *word, *temp;
 	int i;
 
+
+	if (access(argv[0], F_OK) == 0)
+		return (argv[0]);
+
 	dirarr = _getdirenv();
 	if (dirarr == NULL || environ == NULL)
 	{
