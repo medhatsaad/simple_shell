@@ -20,12 +20,13 @@ int main(int argc __attribute__((unused)), char **argv)
 		av = getav(cmd, ac, av);
 		free(cmd);
 
-		if (av != NULL && _strcmp(*av, "exit") == 0)
+		if (av != NULL)
 		{
-			exit_status(ac, av, argv);
-		} else
-			start_proc(av);
-
+			if(_strcmp(*av, "exit") == 0)
+				exit_status(ac, av, argv);
+			else
+				start_proc(av);
+		}
 	}
 	return (0);
 }

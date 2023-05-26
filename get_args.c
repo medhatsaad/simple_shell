@@ -9,7 +9,8 @@ char *readline()
 	char *cmd = NULL;
 	size_t n = 0;
 
-	print("$ ");
+	if (isatty(STDIN_FILENO))
+		print("($) ");
 
 	if (getline(&cmd, &n, stdin) == -1)
 	{
