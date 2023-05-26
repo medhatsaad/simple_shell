@@ -52,8 +52,6 @@ void start_proc(char **av)
 	if (av != NULL)
 	{
 		fullpath = _pathchecker(av);
-
-		
 		
 		if (access(fullpath, F_OK) == 0)
 		{

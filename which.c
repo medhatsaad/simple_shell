@@ -8,7 +8,10 @@ char *_mgetenv(char *_varname)
 {
 	int i;
 	char *line, *envvar;
-	char *dirlist = NULL;
+	char *value = NULL;
+
+	if (environ == NULL)
+		return (NULL);
 
 	for (i = 0 ; environ[i] != NULL; i++)
 	{
@@ -16,9 +19,9 @@ char *_mgetenv(char *_varname)
 		envvar = strtok(line, "=");
 		if (_strcmp(envvar, _varname) == 0)
 		{
-			dirlist = _strcp(strtok(NULL, "="));
+			value = _strcp(strtok(NULL, "="));
 			free(line);
-			return (dirlist);
+			return (value);
 		}
 		free(line);
 	}
@@ -37,6 +40,10 @@ char **_getdirenv()
 	char **dirarr = NULL;
 
 	dirlist = _mgetenv("PATH");
+
+	if (dirlist == NULL)
+		return (NULL);
+
 	_dirlist = _strcp(dirlist);
 	if (strtok(_dirlist, ":") != NULL)
 	{
@@ -108,16 +115,26 @@ char *_mwhich(char **argv)
  */
 char *_pathchecker(char **argv)
 {
-	char **dirarr, *pathname, *path;
+	char **dirarr, *pathname, *path, *msg, *msg1, *msg2, *msg3;
 	int i;
 
 	if (argv[0][0] == '/' || argv[0][0] == '.')
 		return (argv[0]);
-
 	path = _addstring("/", argv[0]);
 	dirarr = _getdirenv();
 	if (dirarr == NULL)
-		return (argv[0]);
+		{
+			if (_mgetenv("PWD") == NULL)
+				msg1 = _addstring("./",program_invocation_short_name);
+			else
+				msg1 = program_invocation_name;
+			msg2 = _addstring(msg1, ": 1: ");
+			msg3 = _addstring(msg2,argv[0]);
+			msg = _addstring(msg3, ": not found");
+			write(STDERR_FILENO,msg,_strlen(msg));
+			write(STDERR_FILENO,"\n",1);
+			exit(127);
+		}
 	for (i = 0; dirarr[i] != NULL; i++)
 	{
 		pathname = _addstring(dirarr[i], path);
@@ -133,6 +150,7 @@ char *_pathchecker(char **argv)
 	free(path);
 	return (argv[0]);
 }
+
 
 /**
  * _freearr - free memory assigned for array

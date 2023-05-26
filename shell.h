@@ -11,6 +11,7 @@
 #include <errno.h>
 extern char **environ;
 extern char *program_invocation_name;
+extern char *program_invocation_short_name;
 #define BUFF_SIZE 1024
 
 void non_interactive(char **argv);
