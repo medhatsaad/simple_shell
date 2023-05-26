@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * exit_status - exits shell with a status
  * @av: arg
@@ -7,45 +6,38 @@
  * * Return: 0
  */
 
-int exit_status(char **av)
+void exit_status(int ac, char **av, char **argv)
 {
 	int status = 0;
 	size_t i = 0;
 
-	if (av == NULL)
-		return (0);
-
-	if (_strcmp(av[0], "exit") == 0)
+	if (ac > 2)
 	{
-		if (av[1] != NULL)
-		{
-			while (isdigit(av[1][i]))
-				i++;
-
-			if (i == strlen(av[1]))
-			{
-				if (av[2] != NULL)
-				{
-					i = 0;
-					while (isdigit(av[2][i]))
-						i++;
-					if (i == strlen(av[2]))
-					{
-						print("hsh: exit: too many arguments\n");
-						return (1);
-					}
-				}
-
-				status = atoi(av[1]);
-			}
-		}
-
-		for (i = 0; av[i] != NULL; i++)
-			free(av[i]);
-		exit(status);
+		print(argv[0]);
+	      	print(": exit: too many arguments\n");
+		return;
 	}
-	return (0);
+	if (ac == 2)
+	{
+		while (_isdigit(av[1][i]))
+			i++;
+
+		if (i == _strlen(av[1]))
+			status = _atoi(av[1]);
+		else
+		{
+			print(argv[0]);
+			print(": 1: exit: Illegal number: ");
+			print(av[1]);
+			print("\n");
+			return;
+		}
+	}
+
+	_freearr(av);
+	exit(status);
 }
+
 /**
  * start_proc - starts a new process if a executable is found
  * @av: array of pointers
@@ -56,7 +48,6 @@ void start_proc(char **av)
 	/**char *newenviron[] = {"LANG=en_US.UTF-8", 0};*/
 	pid_t proc;
 	char *fullpath = NULL, *msg, *msg1, *msg2;
-	
 	
 	if (av != NULL)
 	{
@@ -92,13 +83,12 @@ void start_proc(char **av)
 		}
 
 		_freearr(av);
-		
 	}
 }
 /**
  *non_interactive - should handle the non interactive mode
  */
-void non_interactive(void)
+void non_interactive(char **argv)
 {
 	char **av = NULL;
 	char *cmd = NULL;
@@ -113,12 +103,13 @@ void non_interactive(void)
 		{
 			ac = getac(cmd);
 			av = getav(cmd, ac, av);
+
+			if (_strcmp(*av, "exit") == 0)
+				exit_status(ac, av, argv);
 			start_proc(av);
 			s = getline(&cmd, &n, stdin);
 		}
-		
 		free(cmd);
-			exit(0);
 		exit(0);
 	}
 }

@@ -13,14 +13,14 @@ extern char **environ;
 extern char *program_invocation_name;
 #define BUFF_SIZE 1024
 
-void non_interactive(void);
+void non_interactive(char **argv);
 char *readline();
 char *isapath(char *path, char *cmd);
 void print(char *buff);
 void start_proc(char **a);
 int getac(char *str);
 char **getav(char *str, int ac, char **av);
-int exit_status(char **av);
+void exit_status(int ac, char **av, char **argv);
 size_t _strlen(char *p);
 int _strcmp(char *a, char *b);
 char *_strcp(char *p);
