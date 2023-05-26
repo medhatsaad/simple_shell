@@ -99,7 +99,13 @@ char *_mwhiche(char **argv)
 		return (pathname);
 	}
 
-	return (_pathchecker(argv));
+	if (checkbuiltin(argv))
+	{
+		pathname = NULL;
+		return (pathname);
+	}
+	else 
+		return (_pathchecker(argv));
 }
 /**
  * _pathchecker - check command vs path env
