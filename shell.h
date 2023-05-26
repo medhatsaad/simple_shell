@@ -7,14 +7,17 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <ctype.h>
+#include <sys/stat.h>
+#include <errno.h>
 extern char **environ;
+extern char *program_invocation_name;
 #define BUFF_SIZE 1024
 
 void non_interactive(void);
 char *readline();
 char *isapath(char *path, char *cmd);
 void print(char *buff);
-void start_proc(char **av);
+void start_proc(char **a);
 int getac(char *str);
 char **getav(char *str, int ac, char **av);
 int exit_status(char **av);

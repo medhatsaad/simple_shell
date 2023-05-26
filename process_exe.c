@@ -55,11 +55,14 @@ void start_proc(char **av)
 {
 	/**char *newenviron[] = {"LANG=en_US.UTF-8", 0};*/
 	pid_t proc;
-	char *fullpath = NULL;
+	char *fullpath = NULL, *msg, *msg1, *msg2;
+	
 	
 	if (av != NULL)
 	{
 		fullpath = _pathchecker(av);
+
+		
 		
 		if (access(fullpath, F_OK) == 0)
 		{
@@ -80,7 +83,12 @@ void start_proc(char **av)
 			}
 		} else
 		{
-			perror(av[0]);
+			msg1 = _addstring(program_invocation_name, ": 1: ");
+			msg2 = _addstring(msg1,av[0]);
+			msg = _addstring(msg2, ": not found");
+			write(STDERR_FILENO,msg,_strlen(msg));
+			write(STDERR_FILENO,"\n",1);
+			exit(127);
 		}
 
 		_freearr(av);
@@ -96,6 +104,7 @@ void non_interactive(void)
 	char *cmd = NULL;
 	size_t n = 0;
 	int ac, s = 1;
+	
 
 	if (!(isatty(STDIN_FILENO)))
 	{
