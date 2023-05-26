@@ -10,9 +10,6 @@ char *_mgetenv(char *_varname)
 	char *line, *envvar;
 	char *value = NULL;
 
-	if (environ == NULL)
-		return (NULL);
-
 	for (i = 0 ; environ[i] != NULL; i++)
 	{
 		line = _strcp(environ[i]);
@@ -79,28 +76,18 @@ char **_getdirenv()
  */
 char *_mwhiche(char **argv)
 {
-	char *pathname, *word, *temp;
+	char *pathname;
 
-	if (argv[0][0] == '	')
+	if (argv[1] == NULL && access(argv[0], F_OK) == 0)
 	{
-		temp = _strcp(argv[0]);
-		word = _strcp(strtok(temp,"	"));
-		free(temp);
-	}
-	else
-		word = _strcp(argv[0]);
-	if (word[0] == '/' || word[0] == '.')
-	{
-		if (access(word, F_OK) == 0)
-			pathname = _strcp(word);
-		else
-			pathname = NULL;
-		free(word);
+		pathname = _strcp(argv[0]);
 		return (pathname);
 	}
 
 	return (_pathchecker(argv));
 }
+
+
 /**
  * _pathchecker - check command vs path env
  * @argv: input command
@@ -111,9 +98,6 @@ char *_pathchecker(char **argv)
 	char **dirarr, *pathname, *path, *_pathname, *word, *temp;
 	int i;
 
-
-	if (access(argv[0], F_OK) == 0)
-		return (argv[0]);
 
 	dirarr = _getdirenv();
 	if (dirarr == NULL || environ == NULL)
@@ -160,6 +144,8 @@ void _freearr(char **arr)
 {
 	int i;
 
+	if (arr == NULL)
+		return;
 	for (i = 0; arr[i] != NULL; i++)
 		free(arr[i]);
 	free(arr[i]);
