@@ -100,7 +100,8 @@ void non_interactive(char **argv)
 		}
 		ac = getac(cmd);
 		av = getav(cmd, ac, av);
-
+		free(cmd);
+		cmd = NULL;
 		if (av != NULL)
 		{
 			if (_strcmp(*av, "exit") == 0)
