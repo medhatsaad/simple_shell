@@ -78,7 +78,7 @@ char *_mwhiche(char **argv)
 {
 	char *pathname;
 
-	if (argv[1] == NULL && access(argv[0], F_OK) == 0)
+	if (access(argv[0], X_OK) == 0)
 	{
 		pathname = _strcp(argv[0]);
 		return (pathname);

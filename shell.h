@@ -9,6 +9,9 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include <errno.h>
+
+
+
 extern char **environ;
 extern char *program_invocation_name;
 extern char *program_invocation_short_name;
