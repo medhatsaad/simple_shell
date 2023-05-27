@@ -92,22 +92,23 @@ void non_interactive(char **argv)
 
 	if (!(isatty(STDIN_FILENO)))
 	{
-		if (getline(&cmd, &n, stdin) == -1)
-		{
-			_freearr(av);
-			free(cmd);
-			exit(0);
-		}
-		ac = getac(cmd);
-		av = getav(cmd, ac, av);
+		int s;
 
-		if (av != NULL)
+		s = getline(&cmd, &n, stdin);
+		while (s != -1)
 		{
-			if (_strcmp(*av, "exit") == 0)
-				exit_status(ac, av, argv);
-			else
-				start_proc(av);
-			/*s = getline(&cmd, &n, stdin);*/
+			ac = getac(cmd);
+			av = getav(cmd, ac, av);
+			if (av != NULL)
+			{
+				if (_strcmp(*av, "exit") == 0)
+					exit_status(ac, av, argv);
+				else
+					start_proc(av);
+				s = getline(&cmd, &n, stdin);
+			}
 		}
+		free(cmd);
+		exit(0);
 	}
 }

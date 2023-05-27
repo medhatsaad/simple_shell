@@ -79,23 +79,14 @@ char **_getdirenv()
  */
 char *_mwhiche(char **argv)
 {
-	char *pathname, *word, *temp;
+	char *pathname;
 
-	if (argv[0][0] == '	')
+	if (argv[0][0] == '/' || argv[0][0] == '.')
 	{
-		temp = _strcp(argv[0]);
-		word = _strcp(strtok(temp,"	"));
-		free(temp);
-	}
-	else
-		word = _strcp(argv[0]);
-	if (word[0] == '/' || word[0] == '.')
-	{
-		if (access(word, F_OK) == 0)
-			pathname = _strcp(word);
+		if (access(argv[0], F_OK) == 0)
+			pathname = _strcp(argv[0]);
 		else
 			pathname = NULL;
-		free(word);
 		return (pathname);
 	}
 
@@ -104,7 +95,7 @@ char *_mwhiche(char **argv)
 		pathname = NULL;
 		return (pathname);
 	}
-	else 
+	else
 		return (_pathchecker(argv));
 }
 /**
@@ -114,7 +105,7 @@ char *_mwhiche(char **argv)
  */
 char *_pathchecker(char **argv)
 {
-	char **dirarr, *pathname, *path, *_pathname, *word, *temp;
+	char **dirarr, *pathname, *path, *_pathname;
 	int i;
 
 	dirarr = _getdirenv();
@@ -123,17 +114,7 @@ char *_pathchecker(char **argv)
 		pathname = NULL;
 		return (pathname);
 	}
-	if (argv[0][0] == '	')
-	{
-		temp = _strcp(argv[0]);
-		word = _strcp(strtok(temp,"	"));
-		free(temp);
-	}
-	else
-		word = _strcp(argv[0]);
-
-	path = _addstring("/", word);
-	free(word);
+	path = _addstring("/", argv[0]);
 	for (i = 0; dirarr[i] != NULL; i++)
 	{
 		_pathname = _addstring(dirarr[i], path);

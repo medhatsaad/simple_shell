@@ -22,7 +22,7 @@ int main(int argc __attribute__((unused)), char **argv)
 
 		if (av != NULL)
 		{
-			if(_strcmp(*av, "exit") == 0)
+			if (_strcmp(*av, "exit") == 0)
 				exit_status(ac, av, argv);
 			else
 				start_proc(av);

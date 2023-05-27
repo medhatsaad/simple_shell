@@ -53,7 +53,7 @@ char **_getdirenv();
 char *_mgetenv(char *_varname);
 char *_mwhiche(char **av);
 void _mexit(char **av, char *p);
-
+char *_strtrim(char *p);
 
 
 
