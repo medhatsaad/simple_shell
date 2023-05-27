@@ -4,12 +4,12 @@
  * readline - get line from stdin
  * Return: string
 */
-char *readline()
+char *readline(int mode)
 {
 	char *cmd = NULL;
 	size_t n = 0;
 
-	if (isatty(STDIN_FILENO))
+	if (mode == 1)
 		print("($) ");
 
 	if (getline(&cmd, &n, stdin) == -1)

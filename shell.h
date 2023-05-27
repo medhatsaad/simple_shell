@@ -11,14 +11,14 @@
 #include <errno.h>
 
 
-
+/*int cmd_count = 0;*/
 extern char **environ;
 extern char *program_invocation_name;
 extern char *program_invocation_short_name;
 #define BUFF_SIZE 1024
 
-void non_interactive(char **argv);
-char *readline();
+void non_interactive(char **argv, int mode);
+char *readline(int mode);
 char *isapath(char *path, char *cmd);
 void print(char *buff);
 void start_proc(char **a);

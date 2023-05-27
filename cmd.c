@@ -9,12 +9,19 @@
 int main(int argc __attribute__((unused)), char **argv)
 {
 	char *cmd = NULL, **av = NULL;
-	int ac;
+	int ac, mode = 0;
+
+
+	if (isatty(STDIN_FILENO))
+		mode = 1;
+
+	errno = 0;
+
 
 	while (1)
 	{
-		non_interactive(argv);
-		cmd = readline();
+		non_interactive(argv, mode);
+		cmd = readline(mode);
 		ac = getac(cmd);
 
 		av = getav(cmd, ac, av);
