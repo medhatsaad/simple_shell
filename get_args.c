@@ -2,6 +2,7 @@
 
 /**
  * readline - get line from stdin
+ * @mode: specifies the mode
  * Return: string
 */
 char *readline(int mode)

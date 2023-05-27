@@ -12,14 +12,7 @@ void exit_status(int ac, char **av, char **argv)
 {
 	int status = 0;
 	size_t i = 0;
-/**
-	if (ac > 2)
-	{
-		print(argv[0]);
-		print(": exit: too many arguments\n");
-		exit(2);
-	}
-*/
+
 	if (ac == 2)
 	{
 		while (_isdigit(av[1][i]))
@@ -60,7 +53,7 @@ void start_proc(char **av)
 
 	if (av != NULL)
 	{
-	     	fullpath = _mwhiche(av);
+		fullpath = _mwhiche(av);
 
 		if (fullpath != NULL)
 		{
@@ -68,7 +61,8 @@ void start_proc(char **av)
 
 			if (proc == 0)
 			{
-				if ((status = execve(fullpath, av, environ)) == -1)
+				status = execve(fullpath, av, environ);
+				if (status == -1)
 				{
 					perror("execution error");
 					exit(2);
