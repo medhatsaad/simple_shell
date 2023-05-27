@@ -102,23 +102,23 @@ void non_interactive(char **argv, int mode)
 
 	if (mode == 0)
 	{
-		if (getline(&cmd, &n, stdin) == -1)
+		int s;
+
+		s = getline(&cmd, &n, stdin);
+		while (s != -1)
 		{
-			_freearr(av);
-			free(cmd);
-			exit(0);
+			ac = getac(cmd);
+			av = getav(cmd, ac, av);
+			if (av != NULL)
+			{
+				if (_strcmp(*av, "exit") == 0)
+					exit_status(ac, av, argv);
+				else
+					start_proc(av);
+				s = getline(&cmd, &n, stdin);
+			}
 		}
-		ac = getac(cmd);
-		av = getav(cmd, ac, av);
 		free(cmd);
-		cmd = NULL;
-		if (av != NULL)
-		{
-			if (_strcmp(*av, "exit") == 0)
-				exit_status(ac, av, argv);
-			else
-				start_proc(av);
-			/*s = getline(&cmd, &n, stdin);*/
-		}
+		exit(0);
 	}
 }

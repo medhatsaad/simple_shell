@@ -28,3 +28,5 @@ void _mexit(char **argv, char *p)
 	if (!(isatty(STDIN_FILENO)))
 		exit(127);
 }
+
+

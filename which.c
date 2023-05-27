@@ -78,13 +78,22 @@ char *_mwhiche(char **argv)
 {
 	char *pathname;
 
-	if (access(argv[0], X_OK) == 0)
+	if (argv[0][0] == '/' || argv[0][0] == '.')
 	{
-		pathname = _strcp(argv[0]);
+		if (access(argv[0], X_OK) == 0)
+			pathname = _strcp(argv[0]);
+		else
+			pathname = NULL;
 		return (pathname);
 	}
 
-	return (_pathchecker(argv));
+	if (checkbuiltin(argv))
+	{
+		pathname = NULL;
+		return (pathname);
+	}
+	else
+		return (_pathchecker(argv));
 }
 
 
@@ -95,7 +104,7 @@ char *_mwhiche(char **argv)
  */
 char *_pathchecker(char **argv)
 {
-	char **dirarr, *pathname, *path, *_pathname, *word, *temp;
+	char **dirarr, *pathname, *path, *_pathname;
 	int i;
 
 
@@ -105,21 +114,11 @@ char *_pathchecker(char **argv)
 		pathname = NULL;
 		return (pathname);
 	}
-	if (argv[0][0] == '	')
-	{
-		temp = _strcp(argv[0]);
-		word = _strcp(strtok(temp,"	"));
-		free(temp);
-	}
-	else
-		word = _strcp(argv[0]);
-
-	path = _addstring("/", word);
-	free(word);
+	path = _addstring("/", argv[0]);
 	for (i = 0; dirarr[i] != NULL; i++)
 	{
 		_pathname = _addstring(dirarr[i], path);
-		if (access(_pathname, F_OK) == 0)
+		if (access(_pathname, X_OK) == 0)
 		{
 			pathname = _strcp(_pathname);
 			_freearr(dirarr);
