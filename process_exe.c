@@ -12,13 +12,14 @@ void exit_status(int ac, char **av, char **argv)
 {
 	int status = 0;
 	size_t i = 0;
-
+/**
 	if (ac > 2)
 	{
 		print(argv[0]);
 		print(": exit: too many arguments\n");
-		return;
+		exit(2);
 	}
+*/
 	if (ac == 2)
 	{
 		while (_isdigit(av[1][i]))
@@ -32,7 +33,7 @@ void exit_status(int ac, char **av, char **argv)
 			print(": 1: exit: Illegal number: ");
 			print(av[1]);
 			print("\n");
-			return;
+			exit(2);
 		}
 	}
 
@@ -53,7 +54,7 @@ void start_proc(char **av)
 
 	if (av != NULL)
 	{
-		fullpath = _mwhiche(av);
+	     	fullpath = _mwhiche(av);
 
 		if (fullpath != NULL)
 		{
