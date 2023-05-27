@@ -2,7 +2,7 @@
 
 /**
  * readline - get line from stdin
- * @mode: specifies the mode
+ *@mode: specifies the mode
  * Return: string
 */
 char *readline(int mode)
@@ -105,6 +105,12 @@ char **getav(char *str, int ac, char **av)
 	if (ac > 0)
 	{
 		av = malloc(sizeof(char *) * (ac + 1));
+	/**
+	 *	 if (av == NULL)
+	 *	   av = malloc(sizeof(char *) * (ac + 1));
+	 *	   else
+	 *	   av = realloc(av, sizeof(char *) * (ac + 1));
+	 */
 		if (av == NULL)
 			return (NULL);
 	} else

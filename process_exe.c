@@ -13,6 +13,13 @@ void exit_status(int ac, char **av, char **argv)
 	int status = 0;
 	size_t i = 0;
 
+	if (ac > 2)
+	{
+		print(argv[0]);
+		print(": exit: too many arguments\n");
+		exit(2);
+	}
+
 	if (ac == 2)
 	{
 		while (_isdigit(av[1][i]))
@@ -62,6 +69,7 @@ void start_proc(char **av)
 			if (proc == 0)
 			{
 				status = execve(fullpath, av, environ);
+
 				if (status == -1)
 				{
 					perror("execution error");
@@ -86,6 +94,7 @@ void start_proc(char **av)
 /**
  * non_interactive - should handle the non interactive mode
  * @argv: arguments
+ *@mode: specifies the mode
  */
 void non_interactive(char **argv, int mode)
 {
@@ -96,23 +105,23 @@ void non_interactive(char **argv, int mode)
 
 	if (mode == 0)
 	{
-		int s;
-
-		s = getline(&cmd, &n, stdin);
-		while (s != -1)
+		if (getline(&cmd, &n, stdin) == -1)
 		{
-			ac = getac(cmd);
-			av = getav(cmd, ac, av);
-			if (av != NULL)
-			{
-				if (_strcmp(*av, "exit") == 0)
-					exit_status(ac, av, argv);
-				else
-					start_proc(av);
-				s = getline(&cmd, &n, stdin);
-			}
+			_freearr(av);
+			free(cmd);
+			exit(0);
 		}
+		ac = getac(cmd);
+		av = getav(cmd, ac, av);
 		free(cmd);
-		exit(0);
+		cmd = NULL;
+		if (av != NULL)
+		{
+			if (_strcmp(*av, "exit") == 0)
+				exit_status(ac, av, argv);
+			else
+				start_proc(av);
+			/*s = getline(&cmd, &n, stdin);*/
+		}
 	}
 }
