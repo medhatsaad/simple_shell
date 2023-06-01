@@ -9,7 +9,7 @@
 int main(int argc __attribute__((unused)), char **argv)
 {
 	char *cmd = NULL, **av = NULL;
-	int ac, mode = 0;
+	int ac, cmd_count = 0, mode = 0, status = 0;
 
 
 	if (isatty(STDIN_FILENO))
@@ -17,11 +17,10 @@ int main(int argc __attribute__((unused)), char **argv)
 
 	errno = 0;
 
-
 	while (1)
 	{
-		non_interactive(argv, mode);
-		cmd = readline(mode);
+		cmd = readline(mode, cmd_count);
+		cmd_count += 1;
 		ac = getac(cmd);
 
 		av = getav(cmd, ac, av);
@@ -30,10 +29,10 @@ int main(int argc __attribute__((unused)), char **argv)
 		if (av != NULL)
 		{
 			if (_strcmp(*av, "exit") == 0)
-				exit_status(ac, av, argv);
+				exit_status(ac, av, argv, cmd_count);
 			else
-				start_proc(av);
+				start_proc(av, argv);
 		}
 	}
-	return (0);
+	return (status);
 }

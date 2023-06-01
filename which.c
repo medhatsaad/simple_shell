@@ -77,11 +77,26 @@ char **_getdirenv()
 char *_mwhiche(char **argv)
 {
 	char *pathname;
+	int i, isapath = 0;
 
-	if (access(argv[0], X_OK) == 0)
+
+	for (i = 0; argv[0][i] != '\0'; i++)
 	{
-		pathname = _strcp(argv[0]);
-		return (pathname);
+		if (argv[0][i] == '/')
+		{
+			isapath = 1;
+			break;
+		}
+	}
+	if (isapath == 1)
+	{
+		if (access(argv[0], X_OK) == 0)
+		{
+			pathname = _strcp(argv[0]);
+			return (pathname);
+		}
+		perror(_getenv("PWD"));
+		exit(2);
 	}
 
 	return (_pathchecker(argv));
@@ -95,31 +110,22 @@ char *_mwhiche(char **argv)
  */
 char *_pathchecker(char **argv)
 {
-	char **dirarr, *pathname, *path, *_pathname, *word, *temp;
+	char **dirarr, *pathname, *path, *_pathname, *word;
 	int i;
 
 
 	dirarr = _getdirenv();
 	if (dirarr == NULL || environ == NULL)
-	{
-		pathname = NULL;
-		return (pathname);
-	}
-	if (argv[0][0] == '	')
-	{
-		temp = _strcp(argv[0]);
-		word = _strcp(strtok(temp, "	"));
-		free(temp);
-	}
-	else
-		word = _strcp(argv[0]);
+		return (NULL);
+
+	word = _strcp(argv[0]);
 
 	path = _addstring("/", word);
 	free(word);
 	for (i = 0; dirarr[i] != NULL; i++)
 	{
 		_pathname = _addstring(dirarr[i], path);
-		if (access(_pathname, F_OK) == 0)
+		if (access(_pathname, X_OK) == 0)
 		{
 			pathname = _strcp(_pathname);
 			_freearr(dirarr);
@@ -131,8 +137,7 @@ char *_pathchecker(char **argv)
 	}
 	_freearr(dirarr);
 	free(path);
-	pathname = NULL;
-	return (pathname);
+	return (NULL);
 }
 
 

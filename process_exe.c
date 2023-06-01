@@ -4,21 +4,14 @@
  * @av: arg
  * @ac: no of arg
  * @argv: main function arg
- *
+ *@cmd_count: number of command passed
  * * Return: 0
  */
 
-void exit_status(int ac, char **av, char **argv)
+void exit_status(int ac, char **av, char **argv, int cmd_count)
 {
 	int status = 0;
 	size_t i = 0;
-
-	if (ac > 2)
-	{
-		print(argv[0]);
-		print(": exit: too many arguments\n");
-		exit(2);
-	}
 
 	if (ac == 2)
 	{
@@ -33,27 +26,35 @@ void exit_status(int ac, char **av, char **argv)
 		}
 		else
 		{
-			print(argv[0]);
-			print(": 1: exit: Illegal number: ");
-			print(av[1]);
-			print("\n");
+			print(argv[0], 2);
+			print(": ", 2);
+			printInt(cmd_count, 2);
+			print(": exit: Illegal number: ", 2);
+			print(av[1], 2);
+			print("\n", 2);
 			_freearr(av);
 			exit(2);
 		}
+	} else if (ac > 2)
+	{
+		print(argv[0], 2);
+		print(": exit: too many arguments\n", 2);
+		/* exit(2);*/
+	} else
+	{
+		_freearr(av);
+		exit(errno);
 	}
-
-	_freearr(av);
-	exit(errno);
 }
 
 /**
  * start_proc - starts a new process if a executable is found
  * @av: array of pointers
+ *@argv: array of arguments
  */
 
-void start_proc(char **av)
+void start_proc(char **av, char **argv)
 {
-	/**char *newenviron[] = {"LANG=en_US.UTF-8", 0};*/
 	pid_t proc;
 	int status;
 	char *fullpath = NULL;
@@ -72,7 +73,7 @@ void start_proc(char **av)
 
 				if (status == -1)
 				{
-					perror("execution error");
+					perror(_getenv("PWD"));
 					exit(2);
 				}
 			} else if (proc == -1)
@@ -88,40 +89,36 @@ void start_proc(char **av)
 		free(fullpath);
 		}
 		else
-			_mexit(av, fullpath);
+		{
+			free(fullpath);
+			_mexit(av, argv);
+			status = 127;
+		}
 	}
 }
 /**
- * non_interactive - should handle the non interactive mode
- * @argv: arguments
- *@mode: specifies the mode
+ * printInt - prints a positif  integer number into std (out, err)
+ *@n: integer to print
+ *@std: integer that defines std to print into
  */
-void non_interactive(char **argv, int mode)
+void printInt(int n, int std)
 {
-	char **av = NULL;
-	char *cmd = NULL;
-	size_t n = 0;
-	int ac;
+	char buffer[20], tchar;
+	int i = 0, j;
 
-	if (mode == 0)
+
+	do {
+		buffer[i++] = '0' + (n % 10);
+		n /= 10;
+	} while (n > 0);
+
+
+	for (j = 0; j < i / 2; j++)
 	{
-		if (getline(&cmd, &n, stdin) == -1)
-		{
-			_freearr(av);
-			free(cmd);
-			exit(0);
-		}
-		ac = getac(cmd);
-		av = getav(cmd, ac, av);
-		free(cmd);
-		cmd = NULL;
-		if (av != NULL)
-		{
-			if (_strcmp(*av, "exit") == 0)
-				exit_status(ac, av, argv);
-			else
-				start_proc(av);
-			/*s = getline(&cmd, &n, stdin);*/
-		}
+		tchar = buffer[j];
+		buffer[i] = buffer[n - j - 1];
+		buffer[n - j - 1] = tchar;
 	}
+
+	write(std, buffer, i);
 }

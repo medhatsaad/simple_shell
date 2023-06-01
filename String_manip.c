@@ -25,26 +25,17 @@ int _isdigit(int c)
  */
 int _atoi(char *s)
 {
-	int nb = 0, k = 1, j = 0;
-	size_t i, len;
+	int nb = 0, k = 1;
+	ssize_t i;
 
-	len = _strlen(s);
-
-	for (i = len - 1; (i == 0); i--)
+	for (i = _strlen(s) - 1; i >= 0; i--)
 	{
-		if (s[i] < '9' && s[i] > '0')
+		if (s[i] <= '9' && s[i] >= '0')
 		{
 			nb += ((s[i] - '0') * k);
 			k *= 10;
 		}
-		if (s[i] == '+')
-			j++;
-		if (s[i] == '-')
-			j--;
 	}
-	if (j < 0 && (-j) % 2 != 0)
-		nb *= -1;
-
 	return (nb);
 }
 /**

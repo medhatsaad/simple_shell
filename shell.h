@@ -11,20 +11,22 @@
 #include <errno.h>
 
 
-/*int cmd_count = 0;*/
+
 extern char **environ;
 extern char *program_invocation_name;
 extern char *program_invocation_short_name;
 #define BUFF_SIZE 1024
 
-void non_interactive(char **argv, int mode);
-char *readline(int mode);
+extern int status;
+char *_getline();
+char *readline(int mode, int cmd_count);
 char *isapath(char *path, char *cmd);
-void print(char *buff);
-void start_proc(char **a);
+void print(char *buff, int i);
+void start_proc(char **av, char **argv);
 int getac(char *str);
 char **getav(char *str, int ac, char **av);
-void exit_status(int ac, char **av, char **argv);
+void exit_status(int ac, char **av, char **argv, int cmd_count);
+void printInt(int n, int std);
 size_t _strlen(char *p);
 int _strcmp(char *a, char *b);
 char *_strcp(char *p);
@@ -55,7 +57,7 @@ char *_pathchecker(char **argv);
 char **_getdirenv();
 char *_mgetenv(char *_varname);
 char *_mwhiche(char **av);
-void _mexit(char **av, char *p);
+void _mexit(char **av, char **argv);
 char *_strtrim(char *p);
 
 

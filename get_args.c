@@ -3,18 +3,19 @@
 /**
  * readline - get line from stdin
  *@mode: specifies the mode
+ *@cmd_count: number of command passed
  * Return: string
 */
-char *readline(int mode)
+char *readline(int mode, int cmd_count)
 {
 	char *cmd = NULL;
 	size_t n = 0;
 
 	if (mode == 1)
-		print("($) ");
-
+		print("($) ", 1);
 	if (getline(&cmd, &n, stdin) == -1)
 	{
+		cmd_count += 1;
 		free(cmd);
 		exit(0);
 	}
@@ -131,16 +132,17 @@ char **getav(char *str, int ac, char **av)
 }
 
 /**
- * print - prints a buffer to the standard output
+ * print - prints a buffer to the standard std (out, err)
  * @buff: pointer to the buffer to print
+ * @i: integer that takes 1 for stdout and 2 for stderr
  */
-void print(char *buff)
+void print(char *buff, int i)
 {
 	size_t n = 0;
 
 	if (buff != NULL)
 	{
 		n = _strlen(buff);
-		write(1, buff, n);
+		write(i, buff, n);
 	}
 }
