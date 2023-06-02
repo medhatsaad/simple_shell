@@ -7,7 +7,7 @@
 char *_mgetenv(char *_varname)
 {
 	int i;
-	char *line, *envvar;
+	char *line = NULL, *envvar = NULL;
 	char *value = NULL;
 
 	for (i = 0 ; environ[i] != NULL; i++)
@@ -33,7 +33,7 @@ char *_mgetenv(char *_varname)
 char **_getdirenv()
 {
 	int i, size;
-	char *dirname, *dirlist, *_dirlist;
+	char *dirname = NULL, *dirlist = NULL, *_dirlist = NULL;
 	char **dirarr = NULL;
 
 	dirlist = _mgetenv("PATH");
@@ -76,7 +76,7 @@ char **_getdirenv()
  */
 char *_mwhiche(char **argv)
 {
-	char *pathname;
+	char *pathname = NULL;
 	int i, isapath = 0;
 
 
@@ -110,7 +110,8 @@ char *_mwhiche(char **argv)
  */
 char *_pathchecker(char **argv)
 {
-	char **dirarr, *pathname, *path, *_pathname, *word;
+	char **dirarr = NULL, *pathname = NULL, *path = NULL;
+	char *_pathname = NULL, *word = NULL;
 	int i;
 
 
